@@ -1,0 +1,1 @@
+This folder is meant to contain the glassbreak sensor code and all other information related to it
