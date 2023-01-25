@@ -1,0 +1,48 @@
+.top {
+    background-color: #333;
+    height: 5%;
+    width: 100%;
+    min-height: 40px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+.top img {
+    width: 200px;
+    height: 40px;
+}
+
+.sidebar {
+    background-color: #333;
+    position: fixed;
+    height: 100%;
+    width: 200px;
+    top: 40px;
+    left: 0%;
+}
+
+.sidebar .box a {
+    padding-left: 40px;
+    padding-right: 20px;
+    padding-top: 20px;
+    height: 50px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+}
+
+.sidebar .active {
+    background-color: #4CAF50;
+}
+
+.sidebar .box:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.menu {
+    text-align: center;
+}
