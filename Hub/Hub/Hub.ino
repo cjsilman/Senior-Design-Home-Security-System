@@ -8,11 +8,15 @@
 #define SD_CHIPSELECT 4
 
 // WiFi Network Credentials
-const char* ssid = "lanboyp";
-const char* password = "saharajoe2020.!!";
+const char* wifi_network_ssid = "lanboyp";
+const char* wifi_network_password = "saharajoe2020.!!";
+
+//Soft Access Point
+const char *soft_ap_ssid = "ESP32";
+const char *soft_ap_password = "testpassword";
 
 // Create an AsyncWebServer object on port 80
-AsynWebServer server(80)
+AsyncWebServer server(80);
 
 void initSDCard() {
   //Checks if SD is on CS pin
@@ -32,7 +36,7 @@ void initSDCard() {
     case CARD_SD:
       Serial.println("SDSC");
       break;
-    case CARD_SDHC;
+    case CARD_SDHC:
       Serial.println("SDHC");
       break;
     default:
@@ -45,10 +49,20 @@ void initSDCard() {
   Serial.printf("SD Card Size: %lluMB\n", cardSize);
 }
 
+void initWiFi() {
+  WiFi.mode(WIFI_MODE_APSTA);
+  WiFi.begin(wifi_network_ssid, wifi_network_password);
+}
+
+void initSoftAP() {
+  WiFi.softAP(soft_ap_ssid, soft_ap_password);
+}
 
 void setup() {
-  // put your setup code here, to run once:
-
+  Serial.begin(115200);
+  initSDCard();
+  initWiFi();
+  initSoftAP();
 }
 
 void loop() {
