@@ -63,6 +63,23 @@ void setup() {
   initSDCard();
   initWiFi();
   initSoftAP();
+
+  //When ESP is accessed on root address, send index.html file
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SD, "/index.html", "text/html");
+  });
+
+  //Setup Client Connection
+  WiFiClient client = server.available();
+
+  if (client) {
+    
+  }
+
+  server.serveStatic("/", SD, "/");
+
+  server.begin();
+
 }
 
 void loop() {
