@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP Firebase App</title>
+
+    <link href='style.css' rel='stylesheet' />
+    
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script src="firebaseConfig.js"></script>
+</head>
+<body>
+    <div class = "container">
+
+        <header>
+            <h1>Home Security System</h1>
+        </header>
+
+        <div class = "content">
+
+            <div class = "main">
+
+                <div class = "main-header">
+                    <p>
+                        Shown below are all the different devices of your system
+                    </p>
+                </div>
+
+                <div class = "nodes">
+                    <div class = "node">
+                        <h3>Add a device</h3>
+                        <button id="add-device-button">+</button>
+                    </div>
+                </div>
+
+                <div class="device-form">
+                    <div class="form-flex">
+                        <form>
+                            <ul>
+                                <li>
+                                    <label for="device-name">Device Name:</label>
+                                    <input type="text" id="device-name" placeholder="Enter device name" required>
+                                </li>
+                                <li>
+                                    <label for="mac-addr">MAC Address:</label>
+                                    <input type="text" id="mac-addr" placeholder="A4:F2:7B:FF:B0:3A" required>
+                                </li>
+                                <li>
+                                    <label for="type">Type:</label>
+                                    <select id="type-selector" name="type">
+                                        <option value="Camera">Camera</option>
+                                        <option value="Glassbreak Sensor">Glassbreak Sensor</option>
+                                        <option value="Temperature Sensor">Temperature Sensor</option>
+                                        <option value="Door Sensor">Door Sensor</option>
+                                    </select> 
+                                </li>
+                                <li>
+                                    <button type="submit" value="add">Add Device</button>
+                                    <button type="reset" value="cancel">Cancel</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class='sidebar'>
+                    <div class = 'button button1 button_slide slide_right dropdown-content'>
+                        <a id = "b1" href="#">Account</a>
+                    </div>
+                    <div class = 'button button2 button_slide slide_right dropdown-content'>
+                        <a href="#">Devices</a>
+                    </div>
+                    <div class = 'button button3 button_slide slide_right dropdown-content'>
+                        <a href="#">Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="addNode.js"></script>
+
+</body>
+</html>
