@@ -8,7 +8,7 @@
 
 void CamConfig();
 void SDInit();
-void CaptureJPEG();
+void CaptureNScan();
 void TimeLapse();
 
 #endif
