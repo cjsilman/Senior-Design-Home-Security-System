@@ -14,7 +14,6 @@
 //EEPROM Count
 unsigned int ProgCount = 0;
 
-
 void setup() {
  
   // Disable brownout detector
@@ -30,23 +29,28 @@ void setup() {
   Serial.println("MicroSD Initialized.");
   
   //Image Capture For Video Creation
-  TimeLapse();
+  
+  if(ProgCount > 0 ) {
+   TimeLapse();
+    Serial.println("Time Lapse Executed.");
+  }
+  
 
   // initialize EEPROM and Update Video Count
   EEPROM.begin(EEPROM_SIZE);
   ProgCount = EEPROM.read(0) + 1;
   EEPROM.write(0, ProgCount);
   EEPROM.commit();
- 
-  //Wake Up when Motion is Detected on Pin 12
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_12, 1);
+  Serial.println(ProgCount);
+  
+  //Wake Up when Motion is Detected on Pin 13
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
  
   Serial.println("Entering sleep mode");
   delay(1000);
   esp_deep_sleep_start();
- 
 }
  
 void loop() {
- delay(1000);
+ 
 }
