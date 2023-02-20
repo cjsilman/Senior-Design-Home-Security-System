@@ -9,9 +9,6 @@
 #include "EEPROM.h"
  
 
- 
-
-
 void setup() {
  
   // Disable brownout detector

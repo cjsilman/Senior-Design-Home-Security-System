@@ -4,18 +4,47 @@
 #include "FS.h"
 #include "SD_MMC.h"
 #include "EEPROM.h"
+//Firebase Libs
+#include <Firebase_ESP_Client.h>
+#include <addons/TokenHelper.h>
 
 
 // Use 1 byte of EEPROM space
 #define EEPROM_SIZE 1
 
-/////////////// Constants and GPIO Camera Definitions /////////////////////////
+//////////////////////////////////////
+//Constants and Wifi Creds
+//////////////////////////////////////
 //EEPROM Count
 unsigned int ProgCount = 0;
 // Delay Between Images
 unsigned int delayTime = 500;
- 
+
+//Wifi Creds
+const char* ssid = "JD2.4";
+const char* password = "Hal9cour9!";
+
+/////////////////////////////////////
+//Firebase Definitions
+////////////////////////////////////
+//API Key
+#define API_KEY "AIzaSyCwasbPktOgE6gTIMXMlVcpc0aPidCtDgs"
+
+// Insert Authorized Email and Corresponding Password
+#define USER_EMAIL "jwdurie@gmail.com"
+#define USER_PASSWORD "Hal9cour9!"
+
+//Storage Bucket  ID
+#define STORAGE_BUCKET_ID "esp32-cam-photo-upload.appspot.com"
+
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig configF;
+
+////////////////////////////////////
 // Pin definitions for CAMERA_MODEL_AI_THINKER
+////////////////////////////////////
+
 #define PWDN_GPIO_NUM     32
 #define RESET_GPIO_NUM    -1
 #define XCLK_GPIO_NUM      0
@@ -61,8 +90,8 @@ unsigned int delayTime = 500;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_GRAYSCALE; // Choices are YUV422, GRAYSCALE, RGB565, JPEG
-  config.frame_size = FRAMESIZE_XGA;
+  config.pixel_format = PIXFORMAT_JPEG; // Choices are YUV422, GRAYSCALE, RGB565, JPEG
+  config.frame_size = FRAMESIZE_QVGA;
   config.jpeg_quality = 10; //10-63 
   config.fb_count = 5;
   
@@ -72,6 +101,17 @@ unsigned int delayTime = 500;
     Serial.printf("Camera init failed with error 0x%x", err);
     return;
   } 
+}
+//////////////////////////////////////////////////////////////////////
+// Initialize Wifi
+//////////////////////////////////////////////////////////////////////
+
+void WifiInit() {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -150,4 +190,29 @@ if(ProgCount > 1) {
   }
 }
 
+}
+/////////////////////////////////////////////////////////////////////
+//Firebase Upload
+/////////////////////////////////////////////////////////////////////
+void FirebaseStart() {
+
+  WifiInit();
+  SDInit();
+// Assign the api key
+  configF.api_key = API_KEY;
+  //Assign the user sign in credentials
+  auth.user.email = USER_EMAIL;
+  auth.user.password = USER_PASSWORD;
+  configF.token_status_callback = tokenStatusCallback; 
+
+  Firebase.begin(&configF, &auth);
+  Firebase.reconnectWiFi(true);
+
+  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "/image1.jpg" , mem_storage_type_sd , "/data/image1.jpg" /* path of remote file stored in the bucket */, "image/jpeg")){
+    Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
+  }
+   else{
+     Serial.println(fbdo.errorReason());
+  }
+   
 }
