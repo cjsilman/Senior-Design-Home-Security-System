@@ -5,11 +5,16 @@
 #include <vector>
 #include "node.h"
 #include "nodelistFunctions.h"
+#include <esp_now.h>
 
 //Provide the token generation process info.
 #include "addons/TokenHelper.h"
 //Provide the RTDB payload printing info and other helper functions.
 #include "addons/RTDBHelper.h"
+
+//--------------------------------------
+//              Constants
+//--------------------------------------
 
 // Network credentials
 #define WIFI_SSID "lanboyp"
@@ -32,6 +37,32 @@ FirebaseConfig config;
 
 bool signupOK = false;
 
+typedef struct struct_message {
+  char a[32];
+  int b;
+  float c;
+  bool d;
+} struct_message;
+
+// Create a struct_message called myData
+struct_message myData;
+
+esp_now_peer_info_t peerInfo;
+
+uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
+
+//Calback function
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+}
+
+
+
+//--------------------------------------
+//              Functions
+//--------------------------------------
+
 void startWifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
@@ -40,6 +71,9 @@ void startWifi() {
     Serial.print(".");
     delay(300);
   }
+
+  WiFi.mode(WIFI_AP_STA);
+
   Serial.println("OK");
 }
 
@@ -96,6 +130,34 @@ void updateFirebase() {
   }
 }
 
+
+void startEspnow() {
+// Init ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Once ESPNow is successfully Init, we will register for Send CB to
+  // get the status of Trasnmitted packet
+  esp_now_register_send_cb(OnDataSent);
+  
+  // Register peer
+  memcpy(peerInfo.peer_addr, nodeList[4].getMacAddr(), 6);
+  peerInfo.channel = 0;  
+  peerInfo.encrypt = false;
+  
+  // Add peer        
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+}
+
+//--------------------------------------
+//              Setup
+//--------------------------------------
+
 void setup() {
   Serial.begin(115200);
   
@@ -111,6 +173,8 @@ void setup() {
 
   updateFirebase();
 
+  startEspnow();
+
   printNodeList(nodeList);
 
   Serial.println("-------------------");
@@ -119,6 +183,25 @@ void setup() {
 
 }
 
-void loop() {
+//--------------------------------------
+//              Main
+//--------------------------------------
 
+void loop() {
+  // Set values to send
+  strcpy(myData.a, "THIS IS A CHAR");
+  myData.b = random(1,20);
+  myData.c = 1.2;
+  myData.d = false;
+
+  // Send message via ESP-NOW
+  esp_err_t result = esp_now_send(nodeList[4].getMacAddr(), (uint8_t *) &myData, sizeof(myData));
+   
+  if (result == ESP_OK) {
+    Serial.println("Sent with success");
+  }
+  else {
+    Serial.println("Error sending the data");
+  }
+  delay(2000);
 }
