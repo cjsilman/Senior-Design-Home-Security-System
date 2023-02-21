@@ -8,11 +8,6 @@
 // EEPROM Library
 #include "EEPROM.h"
  
-// Use 1 byte of EEPROM space
-#define EEPROM_SIZE 1
- 
-//EEPROM Count
-unsigned int ProgCount = 0;
 
 void setup() {
  
@@ -29,20 +24,8 @@ void setup() {
   Serial.println("MicroSD Initialized.");
   
   //Image Capture For Video Creation
-  
-  if(ProgCount > 0 ) {
-   TimeLapse();
-    Serial.println("Time Lapse Executed.");
-  }
-  
-
-  // initialize EEPROM and Update Video Count
-  EEPROM.begin(EEPROM_SIZE);
-  ProgCount = EEPROM.read(0) + 1;
-  EEPROM.write(0, ProgCount);
-  EEPROM.commit();
-  Serial.println(ProgCount);
-  
+  TimeLapse();
+   
   //Wake Up when Motion is Detected on Pin 13
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
  
