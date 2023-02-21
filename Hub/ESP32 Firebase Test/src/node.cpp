@@ -54,8 +54,9 @@ void Node::setMacAddr(String input) {
 
     // If not the correct size, omit and output error
     if (input.length() != 17) {
-        Serial.print("ERR: Incorrect address size with name: ");
+        Serial.print("ERR: Incorrect address with name: ");
         Serial.println(getName());
+        Serial.print("Assigning default: ");
         memcpy(macAddr, addr, 6);
         printMacAddr();
         return;

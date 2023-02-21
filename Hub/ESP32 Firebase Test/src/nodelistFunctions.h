@@ -6,8 +6,8 @@
 #include <Firebase_ESP_Client.h>
 
 void printNodeList(std::vector<Node> nodeList) {
-    Serial.println("---NodeList---");
-    Serial.print("NodeList size: "); Serial.println(nodeList.size());
+    Serial.println("---Nodes in Nodelist---");
+    Serial.print("Number of nodes: "); Serial.println(nodeList.size());
     for(int i = 0; i < nodeList.size(); ++i) {
       Serial.print("ID: ");
       Serial.println(nodeList[i].getID());
@@ -22,7 +22,7 @@ void printNodeList(std::vector<Node> nodeList) {
 }
 
 void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
-    Serial.println("Creating Nodelist...");
+    Serial.print("Grabbing NodeList from Firebase...");
 
     FirebaseJson jsonNodes;
     FirebaseJsonData result;
@@ -51,10 +51,11 @@ void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
         values.push_back(value.value);
         }
         jsonNodes.iteratorEnd();
-        Serial.println("NodeList OK");
+        Serial.println("OK");
   }
 
     //Node Maker
+    Serial.println("Creating local NodeList...");
     nodeList.clear();
     for (int i = 0; i < values.size(); i+=4) {
         Node node;
@@ -64,6 +65,7 @@ void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
         node.setType(values[i+3]);
         nodeList.push_back(node);
     }
+    Serial.println("Local NodeList Completed");
 
     names.clear();
     values.clear();

@@ -68,6 +68,34 @@ void startFirebase() {
   Serial.println("OK");
 }
 
+void updateFirebase() {
+  //Hub Address
+  if (Firebase.RTDB.setString(&fbdo, "hub/hubAddress", WiFi.macAddress())) {
+    Serial.print("Updated Firebase MAC Address to: ");
+    Serial.println(WiFi.macAddress());
+    Serial.println();
+  }
+  else
+  {
+    Serial.println("Failed to update Firebase MAC Address");
+    Serial.println(fbdo.errorReason());
+    Serial.println();
+  }
+
+  //Number of Nodes
+  if (Firebase.RTDB.setInt(&fbdo, "hub/numberOfNodes", nodeList.size())) {
+    Serial.print("Current number of active nodes: ");
+    Serial.println(nodeList.size());
+    Serial.println();
+  }
+  else
+  {
+    Serial.println("Failed to update number of active nodes");
+    Serial.println(fbdo.errorReason());
+    Serial.println();
+  }
+}
+
 void setup() {
   Serial.begin(115200);
   
@@ -81,6 +109,10 @@ void setup() {
 
   makeNodeList(&fbdo, nodeList);
 
+  updateFirebase();
+
+  printNodeList(nodeList);
+
   Serial.println("-------------------");
   Serial.println("Startup Complete");
   Serial.println("-------------------");
@@ -88,5 +120,5 @@ void setup() {
 }
 
 void loop() {
-  
+
 }
