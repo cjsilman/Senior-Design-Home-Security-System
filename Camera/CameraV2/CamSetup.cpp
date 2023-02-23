@@ -7,7 +7,8 @@
 //Firebase Libs
 #include <Firebase_ESP_Client.h>
 #include <addons/TokenHelper.h>
-
+#include "CustomFirebaseFS.h"
+#include <addons/SDHelper.h>
 
 // Use 1 byte of EEPROM space
 #define EEPROM_SIZE 1
@@ -17,8 +18,8 @@
 //////////////////////////////////////
 //EEPROM Count
 unsigned int ProgCount = 0;
-// Delay Between Images
-unsigned int delayTime = 500;
+// Delay Between Images in ms
+unsigned int delayTime = 200;
 
 //Wifi Creds
 const char* ssid = "JD2.4";
@@ -198,6 +199,8 @@ if(ProgCount > 1) {
 /////////////////////////////////////////////////////////////////////
 
 void FirebaseUpload() {
+
+  bool taskCompleted = false;
   // Assign the api key
   configF.api_key = API_KEY;
   //Assign the user sign in credentials
@@ -207,7 +210,11 @@ void FirebaseUpload() {
 
   Firebase.begin(&configF, &auth);
   Firebase.reconnectWiFi(true);
-  SDInit();
+  SD_Card_Mounting();
+  
+ if (Firebase.ready() && !taskCompleted) {
+        taskCompleted = true;
+
  unsigned int savedPhotos = 0;
   while(savedPhotos < 60) {
     String path = "/image" + String(savedPhotos) + ".jpg";
@@ -219,5 +226,6 @@ void FirebaseUpload() {
      Serial.println(fbdo.errorReason());
   }
   ++savedPhotos;
+  }
   }
 }

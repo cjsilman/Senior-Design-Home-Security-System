@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include "FS.h"
 #include "SD_MMC.h"
+#include "CustomFirebaseFS.h"
 
 void CamConfig();
 void SDInit();
