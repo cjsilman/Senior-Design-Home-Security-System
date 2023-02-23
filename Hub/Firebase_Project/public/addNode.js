@@ -1,6 +1,9 @@
 // Nodes Database
 var nodesRef = database.ref('nodes');
 
+//Server database
+var databaseServerNum = database.ref('server');
+
 //Constants
 const nodeList = document.querySelector('.nodes');
 const nodeCreator = nodeList.lastElementChild;
@@ -15,6 +18,13 @@ const deviceSelectorInput = document.querySelector("#type-selector");
 nodesRef.on("child_added", function(snap) {
     console.log("Added", snap.key, snap.val());
     nodeList.insertBefore(nodeHtmlFromObject(snap.val()), nodeCreator);
+    updateTotalNodes();
+});
+
+nodesRef.on("child_removed", function(snap) {
+    console.log("Removed", snap.key, snap.val());
+    removeNode(snap.val().name);
+    updateTotalNodes();
 });
 
 addDeviceButton.addEventListener("click", ()=> {
@@ -36,8 +46,7 @@ deviceForm.addEventListener('submit', (e)=>{
         macAddr: deviceMac,
         type: deviceType
     });
-    
-    nodeList.insertBefore(deviceBox, nodeCreator);
+
     deviceNameInput.value = "";
     deviceMacInput.value = "";
     deviceForm.style.display = "none";
@@ -61,4 +70,25 @@ function nodeHtmlFromObject(node) {
     deviceBox.innerHTML += `<p>${node.macAddr}</p>`;
     deviceBox.innerHTML += `<p>${node.type}</p>`;
     return deviceBox;
-}
+};
+
+//Node counter
+function updateTotalNodes() {
+    console.log("Updating total nodes...")
+    var totalNodes = ((document.querySelectorAll('.node').length)-1);
+    console.log("Now ", totalNodes);
+    databaseServerNum.child("data").set({
+        numberOfNodes: totalNodes
+    });
+};
+
+//Node removed
+function removeNode(name) {
+    var list = nodeList.querySelectorAll(".node");
+    for (var i = 0; i < list.length; ++i) {
+        if(list[i].querySelector("h3").innerHTML == name)
+        {
+            list[i].remove();
+        }
+    }
+};
