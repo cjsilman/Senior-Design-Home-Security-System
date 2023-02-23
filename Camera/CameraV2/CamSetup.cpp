@@ -137,8 +137,8 @@ void SDInit() {
 //Capture and Save Image
 /////////////////////////////////////////////////////////////////////
 
-void CaptureNScan(String path) {
- 
+void CapAndUpload(String path) {
+
   // Setup frame buffer
   camera_fb_t  * fb = esp_camera_fb_get();
  
@@ -169,7 +169,7 @@ void CaptureNScan(String path) {
 ////////////////////////////////////////////////////////////////////
 
 void TimeLapse() {
-
+  
   EEPROM.begin(EEPROM_SIZE);
   ProgCount = EEPROM.read(0) + 1;
   EEPROM.write(0, ProgCount);
@@ -180,25 +180,25 @@ void TimeLapse() {
 
   Serial.print("EEPROM Count at = ");
   Serial.println(ProgCount);
-
+  
 if(ProgCount > 1) {  
-  while(pictureCount < 2) {
+  while(pictureCount < 60) {
      String path = "/image" + String(pictureCount) + ".jpg";
     Serial.printf("Picture file name: %s\n", path.c_str());
-    CaptureNScan(path);
-    pictureCount++;
+    CapAndUpload(path);
+    ++pictureCount;
+    delay(delayTime);
   }
+  FirebaseUpload();
 }
 
 }
 /////////////////////////////////////////////////////////////////////
 //Firebase Upload
 /////////////////////////////////////////////////////////////////////
-void FirebaseStart() {
 
-  WifiInit();
-  SDInit();
-// Assign the api key
+void FirebaseUpload() {
+  // Assign the api key
   configF.api_key = API_KEY;
   //Assign the user sign in credentials
   auth.user.email = USER_EMAIL;
@@ -207,12 +207,17 @@ void FirebaseStart() {
 
   Firebase.begin(&configF, &auth);
   Firebase.reconnectWiFi(true);
-
-  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "/image1.jpg" , mem_storage_type_sd , "/data/image1.jpg" /* path of remote file stored in the bucket */, "image/jpeg")){
+  SDInit();
+ unsigned int savedPhotos = 0;
+  while(savedPhotos < 60) {
+    String path = "/image" + String(savedPhotos) + ".jpg";
+  //Upoad image to firebase at path recieved from Timelapse()
+  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, path , mem_storage_type_sd , path /* path of remote file stored in the bucket */, "image/jpeg")){
     Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
   }
    else{
      Serial.println(fbdo.errorReason());
   }
-   
+  ++savedPhotos;
+  }
 }

@@ -7,10 +7,11 @@
  
 // EEPROM Library
 #include "EEPROM.h"
- 
+
+unsigned int pictureCount; 
 
 void setup() {
- 
+  
   // Disable brownout detector
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
   Serial.begin(115200);
@@ -22,10 +23,14 @@ void setup() {
   // Init SD
   SDInit();
   Serial.println("MicroSD Initialized.");
-  
+
+  //Init WiFi
+  WifiInit();
+  Serial.println("WiFi Connected.");
+
   //Image Capture For Video Creation
   TimeLapse();
-   
+
   //Wake Up when Motion is Detected on Pin 13
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
  

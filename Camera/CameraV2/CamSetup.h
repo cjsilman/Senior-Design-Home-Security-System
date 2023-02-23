@@ -8,9 +8,9 @@
 
 void CamConfig();
 void SDInit();
-void CaptureNScan();
+void CapAndUpload();
 void TimeLapse();
 void WifiInit();
-void FirebaseStart();
+void FirebaseUpload();
 
 #endif
