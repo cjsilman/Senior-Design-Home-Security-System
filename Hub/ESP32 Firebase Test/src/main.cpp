@@ -6,6 +6,7 @@
 #include "node.h"
 #include "nodelistFunctions.h"
 #include <esp_now.h>
+#include <responseStates.h>
 
 //Provide the token generation process info.
 #include "addons/TokenHelper.h"
@@ -26,9 +27,6 @@
 // RTDB URLefine the RTDB URL */
 #define DATABASE_URL "https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/" 
 
-//Nodelist
-std::vector<Node> nodeList;
-
 //Define Firebase Data object
 FirebaseData fbdo;
 
@@ -37,11 +35,16 @@ FirebaseConfig config;
 
 bool signupOK = false;
 
+
+
+//ESP-NOW Communication
+
+ResponseState state;
+
 typedef struct struct_message {
-  char a[32];
-  int b;
-  float c;
-  bool d;
+  uint8_t macAddr[6];
+  char msg[32];
+  ResponseState state;
 } struct_message;
 
 // Create a struct_message called myData
@@ -50,6 +53,10 @@ struct_message myData;
 esp_now_peer_info_t peerInfo;
 
 uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
+
+//Nodelist
+std::vector<Node> nodeList;
+
 
 //Calback function
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -189,10 +196,11 @@ void setup() {
 
 void loop() {
   // Set values to send
-  strcpy(myData.a, "THIS IS A CHAR");
-  myData.b = random(1,20);
-  myData.c = 1.2;
-  myData.d = false;
+  uint8_t addr[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+
+  strcpy(myData.msg, "THIS IS A CHAR");
+  memcpy(myData.macAddr, addr, 6);
+  myData.state = HUB_OK;
 
   // Send message via ESP-NOW
   esp_err_t result = esp_now_send(nodeList[4].getMacAddr(), (uint8_t *) &myData, sizeof(myData));
