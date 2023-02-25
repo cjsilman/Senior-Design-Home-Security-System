@@ -6,7 +6,7 @@
 #include "node.h"
 #include "nodelistFunctions.h"
 #include <esp_now.h>
-#include <responseStates.h>
+#include "espnowHelperHub.h"
 
 //Provide the token generation process info.
 #include "addons/TokenHelper.h"
@@ -35,18 +35,6 @@ FirebaseConfig config;
 
 bool signupOK = false;
 
-
-
-//ESP-NOW Communication
-
-ResponseState state;
-
-typedef struct struct_message {
-  uint8_t macAddr[6];
-  char msg[32];
-  ResponseState state;
-} struct_message;
-
 // Create a struct_message called myData
 struct_message myData;
 
@@ -56,14 +44,6 @@ uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
 
 //Nodelist
 std::vector<Node> nodeList;
-
-
-//Calback function
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
-}
-
 
 
 //--------------------------------------
@@ -148,7 +128,8 @@ void startEspnow() {
   // Once ESPNow is successfully Init, we will register for Send CB to
   // get the status of Trasnmitted packet
   esp_now_register_send_cb(OnDataSent);
-  
+
+  esp_now_register_recv_cb(OnDataRecv);
   // Register peer
   memcpy(peerInfo.peer_addr, nodeList[4].getMacAddr(), 6);
   peerInfo.channel = 0;  
@@ -195,21 +176,14 @@ void setup() {
 //--------------------------------------
 
 void loop() {
-  // Set values to send
-  uint8_t addr[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
-
-  strcpy(myData.msg, "THIS IS A CHAR");
-  memcpy(myData.macAddr, addr, 6);
-  myData.state = HUB_OK;
-
   // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(nodeList[4].getMacAddr(), (uint8_t *) &myData, sizeof(myData));
-  
-  if (result == ESP_OK) {
-    Serial.println("Sent with success");
+  if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, nodeList[4].getMacAddr())) {
+    Serial.print("Message sent!");
   }
-  else {
-    Serial.println("Error sending the data");
+  else
+  {
+    Serial.print("Message failed to send!");
   }
+
   delay(2000);
 }
