@@ -15,6 +15,8 @@ void printNodeList(std::vector<Node> nodeList) {
       Serial.println(nodeList[i].getName());
       Serial.print("Address: ");
       nodeList[i].printMacAddr();
+      Serial.print("StringAddr: ");
+      Serial.println(nodeList[i].getStringMacAddr());
       Serial.print("Type: ");
       Serial.println(nodeList[i].getType());
       Serial.println();
@@ -62,6 +64,7 @@ void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
         node.setID(names[i]);
         node.setName(values[i+2]);
         node.setMacAddr(values[i+1]); //Here because it uses setName function
+        node.setStringMacAddr(values[i+1]);
         node.setType(values[i+3]);
         nodeList.push_back(node);
     }

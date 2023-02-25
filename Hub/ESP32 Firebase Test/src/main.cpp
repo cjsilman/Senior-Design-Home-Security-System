@@ -6,6 +6,7 @@
 #include "node.h"
 #include "nodelistFunctions.h"
 #include <esp_now.h>
+#include "espnowHelperHub.h"
 
 //Provide the token generation process info.
 #include "addons/TokenHelper.h"
@@ -26,9 +27,6 @@
 // RTDB URLefine the RTDB URL */
 #define DATABASE_URL "https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/" 
 
-//Nodelist
-std::vector<Node> nodeList;
-
 //Define Firebase Data object
 FirebaseData fbdo;
 
@@ -37,13 +35,6 @@ FirebaseConfig config;
 
 bool signupOK = false;
 
-typedef struct struct_message {
-  char a[32];
-  int b;
-  float c;
-  bool d;
-} struct_message;
-
 // Create a struct_message called myData
 struct_message myData;
 
@@ -51,12 +42,8 @@ esp_now_peer_info_t peerInfo;
 
 uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
 
-//Calback function
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
-}
-
+//Nodelist
+std::vector<Node> nodeList;
 
 
 //--------------------------------------
@@ -141,7 +128,8 @@ void startEspnow() {
   // Once ESPNow is successfully Init, we will register for Send CB to
   // get the status of Trasnmitted packet
   esp_now_register_send_cb(OnDataSent);
-  
+
+  esp_now_register_recv_cb(OnDataRecv);
   // Register peer
   memcpy(peerInfo.peer_addr, nodeList[4].getMacAddr(), 6);
   peerInfo.channel = 0;  
@@ -188,20 +176,14 @@ void setup() {
 //--------------------------------------
 
 void loop() {
-  // Set values to send
-  strcpy(myData.a, "THIS IS A CHAR");
-  myData.b = random(1,20);
-  myData.c = 1.2;
-  myData.d = false;
-
   // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(nodeList[4].getMacAddr(), (uint8_t *) &myData, sizeof(myData));
-   
-  if (result == ESP_OK) {
-    Serial.println("Sent with success");
+  if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, nodeList[4].getMacAddr())) {
+    Serial.print("Message sent!");
   }
-  else {
-    Serial.println("Error sending the data");
+  else
+  {
+    Serial.print("Message failed to send!");
   }
+
   delay(2000);
 }
