@@ -11,6 +11,11 @@ void Node::setName(String input){
     input.toCharArray(name, input.length()+1);
 }
 
+void Node::setStringMacAddr(String input){
+    input.remove(0,1);
+    input.remove(input.length()-1,1);
+    input.toCharArray(stringMacAddr, input.length()+1);
+}
 
 void Node::setType(String input) {
     input.remove(0,1);
@@ -28,6 +33,10 @@ char * Node::getName() {
 
 uint8_t * Node::getMacAddr() {
     return macAddr;
+}
+
+char * Node::getStringMacAddr() {
+    return stringMacAddr;
 }
 
 void Node::printMacAddr() {

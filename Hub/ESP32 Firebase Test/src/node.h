@@ -7,6 +7,7 @@ class Node {
       char ID[22] = {};
       char name[32] = {};
       uint8_t macAddr[6];
+      char stringMacAddr[22] = {};
       char type[32] = {};
 
       uint8_t charTo8bitHex(char character, char character2);
@@ -20,6 +21,8 @@ class Node {
 
       void setMacAddr(String input);
 
+      void setStringMacAddr(String input);
+
       void setType(String input);
 
       char * getID();
@@ -27,6 +30,8 @@ class Node {
       char * getName();
 
       uint8_t * getMacAddr();
+
+      char * getStringMacAddr();
 
       char * getType();
 
