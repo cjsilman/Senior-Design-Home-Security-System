@@ -7,7 +7,6 @@ const deviceNameInput = document.querySelector("#device-name");
 const deviceMacInput = document.querySelector("#mac-addr");
 const deviceSelectorInput = document.querySelector("#type-selector");
 
-
 addDeviceButton.addEventListener("click", ()=> {
     nodeCreator.style.display = 'none';
     nodeList.appendChild(deviceForm);
@@ -23,10 +22,13 @@ deviceForm.addEventListener('submit', (e)=>{
     var deviceType = deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text;
     
     const deviceBox = document.createElement("div");
+
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${deviceName}</h3>`;
+    deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${deviceMac}')" class="remove-device-button">[delete]</button></div>`;
     deviceBox.innerHTML += `<p>${deviceMac}</p>`;
     deviceBox.innerHTML += `<p>${deviceType}</p>`;
+    deviceBox.id = deviceMac;
     
     nodeList.insertBefore(deviceBox, nodeCreator);
     deviceNameInput.value = "";
@@ -34,6 +36,12 @@ deviceForm.addEventListener('submit', (e)=>{
     deviceForm.style.display = "none";
     nodeCreator.style.display='block';
 });
+
+function removeDevice(deviceMac) {
+    var tempDevice = document.getElementById(deviceMac);
+    tempDevice.remove();
+    console.log(`Removed ${deviceMac}!`);
+};
 
 deviceForm.addEventListener('reset', (e)=>{
     console.log("Cancelled!");

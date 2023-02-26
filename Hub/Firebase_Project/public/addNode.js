@@ -14,6 +14,9 @@ const deviceNameInput = document.querySelector("#device-name");
 const deviceMacInput = document.querySelector("#mac-addr");
 const deviceSelectorInput = document.querySelector("#type-selector");
 
+//Nodes List
+var totalNodes;
+
 // Load older nodes
 nodesRef.on("child_added", function(snap) {
     console.log("Added", snap.key, snap.val());
@@ -41,6 +44,7 @@ deviceForm.addEventListener('submit', (e)=>{
     const deviceMac = deviceMacInput.value;
     var deviceType = deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text;
     
+    //nodesRef.child(`node-${totalNodes+1}`).set
     nodesRef.push({
         name: deviceName,
         macAddr: deviceMac,
@@ -61,21 +65,23 @@ deviceForm.addEventListener('reset', (e)=>{
     nodeCreator.style.display='block';
 });
 
-//Creates html
+
+//Creates html object
 function nodeHtmlFromObject(node) {
-    console.log(node);
     const deviceBox = document.createElement("div");
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${node.name}</h3>`;
+    deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button></div>`;
     deviceBox.innerHTML += `<p>${node.macAddr}</p>`;
     deviceBox.innerHTML += `<p>${node.type}</p>`;
+    deviceBox.id = `${node.macAddr}`;
     return deviceBox;
 };
 
 //Node counter
 function updateTotalNodes() {
     console.log("Updating total nodes...")
-    var totalNodes = ((document.querySelectorAll('.node').length)-1);
+    totalNodes = ((document.querySelectorAll('.node').length)-1);
     console.log("Now ", totalNodes);
     databaseServerNum.child("data").set({
         numberOfNodes: totalNodes
@@ -92,3 +98,25 @@ function removeNode(name) {
         }
     }
 };
+
+function removeDevice(nodeAddr) {
+    var databaseAddr;
+    var nodeKey;
+
+    nodesRef.on("value", function(snap) {
+        snap.forEach((child) => {
+            databaseAddr = child.val().macAddr;
+            nodeKey = child.key;
+            if (databaseAddr == nodeAddr) {
+                console.log(`${databaseAddr} = ${nodeAddr}`);
+                console.log(`Found match, removing: ${nodeAddr}`);
+                var tempDevice = document.getElementById(nodeAddr);
+
+                tempDevice.remove();
+                console.log(`Removed ${nodeKey}!`);
+                nodesRef.child(nodeKey).remove();
+            }
+        })
+    });
+    updateTotalNodes();
+}
