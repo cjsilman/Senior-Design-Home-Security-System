@@ -19,5 +19,6 @@ void SDInit();
 void WifiInit();
 void GetImage();
 void Rapid();
+void FirebaseUpl();
 
 #endif

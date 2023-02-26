@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "driver/rtc_io.h"
 
 //Camera Lib
 #include "esp_camera.h"
@@ -16,6 +17,12 @@
 //EEPROM Lib
 #include "EEPROM.h"
 
+//Firebase Libs
+#include <FS.h>
+#include <Firebase_ESP_Client.h>
+#include <addons/TokenHelper.h>
+#include <addons/SDHelper.h>
+
 //-------------------------------------------------------
 //Define Usage of 1 Byte of EEPROM Space
 
@@ -25,8 +32,8 @@
 //-------------------------------------------------------
 //SSID and Password for Wifi
 
-const char* ssid = "";
-const char* password ="";
+const char* ssid = "JD2.4";
+const char* password ="Hal9cour9!";
 
 
 //-------------------------------------------------------
@@ -61,6 +68,23 @@ unsigned int vidlength = delayTime * picNum; //ms calculation of recording lengt
 //EEPROM Count 
 unsigned int ProgCount = 0;
 
+//-------------------------------------------------------
+//Firebase Definitions
+
+//API Key
+#define API_KEY "AIzaSyCwasbPktOgE6gTIMXMlVcpc0aPidCtDgs"
+
+//Authorized Upload Creds
+#define USER_EMAIL "jwdurie@gmail.com"
+#define USER_PASSWORD "Hal9cour9!"
+
+//Bucket ID
+#define STORAGE_BUCKET_ID "esp32-cam-photo-upload.appspot.com"
+
+//Firebase Data Objects
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig configF;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Camera Configuration Function
@@ -90,7 +114,7 @@ void CamConfig() {
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG; //YUV422, GRAYSCALE, RGB565, JPEG
-  config.frame_size = FRAMESIZE_QVGA;
+  config.frame_size = FRAMESIZE_VGA;
   config.jpeg_quality = 10; //10-63 
   config.fb_count = 5;
   
@@ -121,7 +145,6 @@ void SDInit() {
  
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Initialize WiFi
 
@@ -137,7 +160,7 @@ void SDInit() {
 //Capture Frame from Cam Module
 
 void GetImage(String path) {
-
+   
   // Setup frame buffer
   camera_fb_t  * fb = esp_camera_fb_get();
  
@@ -160,13 +183,12 @@ void GetImage(String path) {
 
  // Return the frame buffer 
   esp_camera_fb_return(fb);
-  
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Rapid Image Aquisition Loop
 
-void Rapid() {
+int Rapid() {
   
   EEPROM.begin(EEPROM_SIZE);
   ProgCount = EEPROM.read(0) + 1;
@@ -181,17 +203,51 @@ void Rapid() {
 unsigned int pictureCount = 0;
   
 if(ProgCount > 1) {  
-  Serial.printf("Capturing", picNum, "Images at", fps, "Frames Per Second");
+  Serial.print("Capturing ");
+  Serial.print(picNum);
+  Serial.print(" Images at ");
+  Serial.print(fps);
   Serial.println();
   while(pictureCount < picNum) {
      String path = "/image" + String(pictureCount) + ".jpg";
-    Serial.printf("Picture file name: %s\n", path.c_str());
     GetImage(path);
     ++pictureCount;
     delay(delayTime);
   }
 }
-
+    return ProgCount;
 }
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Firebase Upload
+
+void FirebaseUpl() {
+  if(ProgCount > 1) {
+  configF.api_key = API_KEY;
+
+  auth.user.email = USER_EMAIL;
+  auth.user.password = USER_PASSWORD;
+
+  configF.token_status_callback = tokenStatusCallback; 
+
+  Firebase.begin(&configF, &auth);
+  Firebase.reconnectWiFi(true);
+  SD_Card_Mounting();
+  unsigned int savedPhotos = 0;
+  while(savedPhotos < 1) {  //replace 1 w picNum
+    String path = "/image" + String(savedPhotos) + ".jpg";
+  //Upoad Image to Firebase
+  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path, "image/jpeg")){
+    Serial.print(savedPhotos );
+    Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
+  }
+   else{
+     Serial.println(fbdo.errorReason());
+  }
+  ++savedPhotos;
+  }
+  }
+  
+}
 

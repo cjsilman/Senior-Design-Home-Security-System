@@ -13,7 +13,7 @@ void setup() {
   
   EEPROM.commit();
 
-  Serial.print("EEPROM Reset to 0 from");
+  Serial.print("EEPROM Reset to 0 from ");
   Serial.print(EEPROM_init);
   
   
