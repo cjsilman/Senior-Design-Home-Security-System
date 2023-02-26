@@ -14,9 +14,11 @@
 //EEPROM Lib
 #include "EEPROM.h"
 
+void disableBluetooth();
 void CamConfig();
 void SDInit();
 void WifiInit();
+void run();
 void GetImage();
 void Rapid();
 void FirebaseUpl();

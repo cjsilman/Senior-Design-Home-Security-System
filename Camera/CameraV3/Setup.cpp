@@ -86,6 +86,14 @@ FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig configF;
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Disable Bluetooth for Power saving
+void disableBluetooth() {
+  btStop();
+  Serial.println("Bluetooth Disabled");
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Camera Configuration Function
 
@@ -131,9 +139,10 @@ void CamConfig() {
 //Initialize MicroSD Card
 
 void SDInit() {
- 
+  
+  delay(3000);
   Serial.println("Mounting MicroSD Card");
-  if (!SD_MMC.begin()) {
+  if (!SD_MMC.begin("/sdcard",true)) {
     Serial.println("MicroSD Card Mount Failed");
     return;
   }
@@ -142,6 +151,8 @@ void SDInit() {
     Serial.println("No MicroSD Card found");
     return;
   }
+  
+ 
  
 }
 
@@ -234,11 +245,13 @@ void FirebaseUpl() {
   Firebase.begin(&configF, &auth);
   Firebase.reconnectWiFi(true);
   SD_Card_Mounting();
+
   unsigned int savedPhotos = 0;
   while(savedPhotos < 1) {  //replace 1 w picNum
     String path = "/image" + String(savedPhotos) + ".jpg";
+    String path2 = "/" + String(ProgCount) + path;
   //Upoad Image to Firebase
-  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path, "image/jpeg")){
+  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path2, "image/jpeg")){
     Serial.print(savedPhotos );
     Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
   }
@@ -249,5 +262,14 @@ void FirebaseUpl() {
   }
   }
   
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//run capture and upload
+
+void run() {
+  Rapid();
+  FirebaseUpl();
+  delay(30);
 }
 
