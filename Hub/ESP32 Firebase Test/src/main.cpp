@@ -149,9 +149,9 @@ void startEspnow() {
 void setup() {
   Serial.begin(115200);
   
-  Serial.println("-------------------");
+  Serial.println("--------------------------------------");
   Serial.println("Startup");
-  Serial.println("-------------------");
+  Serial.println("--------------------------------------");
 
   startWifi();
 
@@ -165,9 +165,34 @@ void setup() {
 
   printNodeList(nodeList);
 
-  Serial.println("-------------------");
+  Serial.println("--------------------------------------");
   Serial.println("Startup Complete");
-  Serial.println("-------------------");
+  Serial.println("--------------------------------------");
+
+  Serial.println("--------------------------------------");
+  Serial.println("Verify Connection");
+  Serial.println("--------------------------------------");
+
+  std::vector<Node>::iterator it;
+  int i = 0;
+
+  for(it = nodeList.begin(); it < nodeList.end(); ++it) {
+    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, it->getMacAddr()) == true) {
+      Serial.print("Message sent to: ");
+      Serial.println(it->getStringMacAddr());
+      Serial.println();
+    }
+    else{
+      Serial.print("Message failed to send to: ");
+      Serial.println(it->getStringMacAddr());
+      Serial.println();
+    }
+  }
+  delay(100);
+
+  Serial.println("--------------------------------------");
+  Serial.println("Verification Complete");
+  Serial.println("--------------------------------------");
 
 }
 
@@ -177,6 +202,7 @@ void setup() {
 
 void loop() {
   // Send message via ESP-NOW
+  /*
   if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, nodeList[4].getMacAddr())) {
     Serial.print("Message sent!");
   }
@@ -186,4 +212,5 @@ void loop() {
   }
 
   delay(2000);
+  */
 }
