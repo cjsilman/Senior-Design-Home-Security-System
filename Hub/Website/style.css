@@ -113,6 +113,22 @@ header {
     border-style: solid;
 }
 
+.remove-device-button {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    border-style: none;
+    background-color: #f9f9f9;
+}
+
+.remove-device-button:hover {
+    color: red;
+}
+
+.node h3 {
+    margin: 0px;
+}
+
 /* Device form holds the form */
   .device-form {
     display: none;
@@ -145,6 +161,7 @@ header {
     font-size: 48px;
     width: 50px;
     height: 50px;
+    margin-top: 10px;
     border-style: none;
     background-color: #f9f9f9;
 }
