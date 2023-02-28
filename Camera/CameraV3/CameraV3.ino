@@ -1,6 +1,9 @@
 //Brownout Error Disable Lib
 #include "soc/rtc_cntl_reg.h"
 
+//Wifi lib
+#include "WiFi.h"
+
 //Custom Lib
 #include "Setup.h"
 
@@ -33,7 +36,7 @@ void setup() {
   delay(1000);
 
   //Wake if 13 High
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_16, 1);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
  
   Serial.println("Entering sleep mode");
 
