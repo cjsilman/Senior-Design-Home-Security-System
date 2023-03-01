@@ -13,7 +13,7 @@
    <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-  import { getStorage, ref, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
+  import { getStorage, ref, listAll, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -33,7 +33,7 @@
   const storage = getStorage();
   //const ref = ref('Files' +  input.name);
   const storageRef = ref(storage, 'Files/' + input.name);
-  const task = getStorage(input);
+  const task = uploadBytes(input);
 </script>
 
 <script src ="get.js"></script>
