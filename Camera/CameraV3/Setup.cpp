@@ -247,7 +247,7 @@ void FirebaseUpl() {
   SD_Card_Mounting();
 
   unsigned int savedPhotos = 0;
-  while(savedPhotos < 1) {  //replace 1 w picNum
+  while(savedPhotos < picNum) {  //replace 1 w picNum
     String path = "/image" + String(savedPhotos) + ".jpg";
     String path2 = "/" + String(ProgCount) + path;
   //Upoad Image to Firebase
