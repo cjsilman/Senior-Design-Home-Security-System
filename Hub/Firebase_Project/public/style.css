@@ -10,9 +10,9 @@ body, html {
 
 header {
     width: 100%;
+    display: flex;
     height: 50px;
-    background-color: #333;
-    margin: 0;
+    background-color: #333; /*#333*/
     padding-bottom: 20px;
     padding-left: 10px;
 }
@@ -88,6 +88,22 @@ header {
     margin: 0;
     padding: 0;
     text-align: center;
+}
+
+.armdisarmdiv {
+    display: flex;
+    justify-content: center;
+    background-color: #f9f9f9;
+    height: 250px;
+    width: 100%;
+}
+
+/* Arm/Disarm */
+.arm_disarm {
+    font-size: 30px;
+    border-radius: 50px;
+    height: 250px;
+    width: 250px;
 }
 
 /* Nodes holds each node */
@@ -185,6 +201,7 @@ ul {
     header {
         text-align: center;
         padding-bottom: 10px;
+        justify-content: center;
     }
 
     .content {
@@ -201,5 +218,7 @@ ul {
 
     .button {
         margin-top: 20px;
+        padding-left: 5px;
+        padding-right: 5px;
     }
   }

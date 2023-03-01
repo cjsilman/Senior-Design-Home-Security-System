@@ -15,18 +15,12 @@ const deviceMacInput = document.querySelector("#mac-addr");
 const deviceSelectorInput = document.querySelector("#type-selector");
 
 //Nodes List
-var totalNodes;
+var totalNodes = 0;
 
 // Load older nodes
 nodesRef.on("child_added", function(snap) {
     console.log("Added", snap.key, snap.val());
     nodeList.insertBefore(nodeHtmlFromObject(snap.val()), nodeCreator);
-    updateTotalNodes();
-});
-
-nodesRef.on("child_removed", function(snap) {
-    console.log("Removed", snap.key, snap.val());
-    removeNode(snap.val().name);
     updateTotalNodes();
 });
 
@@ -44,7 +38,6 @@ deviceForm.addEventListener('submit', (e)=>{
     const deviceMac = deviceMacInput.value;
     var deviceType = deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text;
     
-    //nodesRef.child(`node-${totalNodes+1}`).set
     nodesRef.push({
         name: deviceName,
         macAddr: deviceMac,
@@ -78,6 +71,31 @@ function nodeHtmlFromObject(node) {
     return deviceBox;
 };
 
+function removeDevice(nodeAddr) {
+    var databaseAddr;
+    var nodeKey;
+    nodesRef.on("value", function(snap) {
+        snap.forEach((child) => {
+            databaseAddr = child.val().macAddr;
+            nodeKey = child.key;
+
+            if (databaseAddr == nodeAddr) {
+                console.log(`${databaseAddr} = ${nodeAddr}`);
+                console.log(`Found match, removing: ${nodeAddr}`);
+                var tempDevice = document.getElementById(nodeAddr);
+
+                nodeAddr="";
+
+                tempDevice.remove();
+                console.log(`Removed ${nodeKey}!`);
+                nodesRef.child(nodeKey).remove();
+                updateTotalNodes();
+            }
+        })
+    });
+}
+
+
 //Node counter
 function updateTotalNodes() {
     console.log("Updating total nodes...")
@@ -87,36 +105,3 @@ function updateTotalNodes() {
         numberOfNodes: totalNodes
     });
 };
-
-//Node removed
-function removeNode(name) {
-    var list = nodeList.querySelectorAll(".node");
-    for (var i = 0; i < list.length; ++i) {
-        if(list[i].querySelector("h3").innerHTML == name)
-        {
-            list[i].remove();
-        }
-    }
-};
-
-function removeDevice(nodeAddr) {
-    var databaseAddr;
-    var nodeKey;
-
-    nodesRef.on("value", function(snap) {
-        snap.forEach((child) => {
-            databaseAddr = child.val().macAddr;
-            nodeKey = child.key;
-            if (databaseAddr == nodeAddr) {
-                console.log(`${databaseAddr} = ${nodeAddr}`);
-                console.log(`Found match, removing: ${nodeAddr}`);
-                var tempDevice = document.getElementById(nodeAddr);
-
-                tempDevice.remove();
-                console.log(`Removed ${nodeKey}!`);
-                nodesRef.child(nodeKey).remove();
-            }
-        })
-    });
-    updateTotalNodes();
-}

@@ -89,7 +89,7 @@ void startFirebase() {
   Serial.println("OK");
 }
 
-void updateFirebase() {
+void updateFirebaseHubInfo() {
   //Hub Address
   if (Firebase.RTDB.setString(&fbdo, "hub/hubAddress", WiFi.macAddress())) {
     Serial.print("Updated Firebase MAC Address to: ");
@@ -142,6 +142,25 @@ void startEspnow() {
   }
 }
 
+void attemptContactWithEachDevice() {
+  std::vector<Node>::iterator it;
+  int i = 0;
+
+  for(it = nodeList.begin(); it < nodeList.end(); ++it) {
+    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, it->getMacAddr()) == true) {
+      Serial.print("Message sent to: ");
+      Serial.println(it->getStringMacAddr());
+      Serial.println();
+    }
+    else{
+      Serial.print("Message failed to send to: ");
+      Serial.println(it->getStringMacAddr());
+      Serial.println();
+    }
+  }
+  delay(100);
+}
+
 //--------------------------------------
 //              Setup
 //--------------------------------------
@@ -159,7 +178,7 @@ void setup() {
 
   makeNodeList(&fbdo, nodeList);
 
-  updateFirebase();
+  updateFirebaseHubInfo();
 
   startEspnow();
 
@@ -173,22 +192,8 @@ void setup() {
   Serial.println("Verify Connection");
   Serial.println("--------------------------------------");
 
-  std::vector<Node>::iterator it;
-  int i = 0;
 
-  for(it = nodeList.begin(); it < nodeList.end(); ++it) {
-    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, it->getMacAddr()) == true) {
-      Serial.print("Message sent to: ");
-      Serial.println(it->getStringMacAddr());
-      Serial.println();
-    }
-    else{
-      Serial.print("Message failed to send to: ");
-      Serial.println(it->getStringMacAddr());
-      Serial.println();
-    }
-  }
-  delay(100);
+  attemptContactWithEachDevice();
 
   Serial.println("--------------------------------------");
   Serial.println("Verification Complete");
