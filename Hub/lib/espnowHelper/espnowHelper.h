@@ -26,7 +26,7 @@ typedef struct struct_message {
 //MUST BE CALLED AFTER WIFI IS SETUP
 void espnowSetup(); //Call this to setup ESP now
 
-bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr = hubAddr);
+bool sendMessageToDevice(const char * message, int state, float data = 0.0f, uint8_t* addr = hubAddr);
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status); //What to do on data send
 
