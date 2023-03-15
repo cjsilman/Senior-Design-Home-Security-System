@@ -136,6 +136,29 @@ header {
     border-style: solid;
 }
 
+.node h3 {
+    margin: 0px;
+}
+
+.node p {
+    margin: 0px;
+}
+
+.node_mac {
+    padding-top: 15px;
+    color: #667;
+    font-size: 10px;
+}
+
+.node_type {
+    color: #667;
+    font-size: 10px;
+}
+
+.node_data {
+    padding: 10px;
+}
+
 .remove-device-button {
     margin: 0px;
     padding: 0px;
@@ -146,10 +169,6 @@ header {
 
 .remove-device-button:hover {
     color: red;
-}
-
-.node h3 {
-    margin: 0px;
 }
 
 /* Device form holds the form */

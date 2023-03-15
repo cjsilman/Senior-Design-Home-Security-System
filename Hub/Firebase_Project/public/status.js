@@ -1,5 +1,5 @@
 const button = document.querySelector('.arm_disarm');
-const hubStatusRef = database.ref('hub/hubStatus');
+const hubStatusRef = database.ref('hub/hStatus');
 const hubRef = database.ref('hub');
 var state;
 var statechange = false;
@@ -42,7 +42,7 @@ button.addEventListener("click", (event)=>{
     if (state == "DISARMED" && statechange == false) {
         button.innerHTML = "ARMED";
         button.style.backgroundColor  = "#e63e32";
-        hubStatusRef.child("hubStatus").set({
+        hubRef.child("hStatus").set({
             hubStatus: "ARMED"
         });
         statechange = true;
@@ -51,7 +51,7 @@ button.addEventListener("click", (event)=>{
     if (state == "ARMED" && statechange == false) {
         button.innerHTML = "DISARMED";
         button.style.backgroundColor  = "#4CAF50";
-        hubStatusRef.child("hubStatus").set({
+        hubRef.child("hStatus").set({
             hubStatus: "DISARMED"
         });
         statechange =  true;
