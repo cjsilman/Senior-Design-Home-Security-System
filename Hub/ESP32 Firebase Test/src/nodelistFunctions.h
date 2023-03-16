@@ -59,13 +59,14 @@ void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
     //Node Maker
     Serial.println("Creating local NodeList...");
     nodeList.clear();
-    for (int i = 0; i < values.size(); i+=4) {
+    for (int i = 0; i < values.size(); i+=6) {
         Node node;
+
         node.setID(names[i]);
-        node.setName(values[i+2]);
-        node.setMacAddr(values[i+1]); //Here because it uses setName function
-        node.setStringMacAddr(values[i+1]);
-        node.setType(values[i+3]);
+        node.setName(values[i+3]);
+        node.setMacAddr(values[i+2]); //Here because it uses setName function
+        node.setStringMacAddr(values[i+2]);
+        node.setType(values[i+5]);
         nodeList.push_back(node);
     }
     Serial.println("Local NodeList Completed");

@@ -1,17 +1,11 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <Firebase_ESP_Client.h>
 #include "HTTPClient.h"
 #include <vector>
-#include "node.h"
 #include "nodelistFunctions.h"
 #include <esp_now.h>
 #include "espnowHelperHub.h"
-
-//Provide the token generation process info.
-#include "addons/TokenHelper.h"
-//Provide the RTDB payload printing info and other helper functions.
-#include "addons/RTDBHelper.h"
+#include "firebase.h"
 
 //--------------------------------------
 //              Constants
@@ -21,19 +15,13 @@
 #define WIFI_SSID "lanboyp"
 #define WIFI_PASSWORD "saharajoe2020.!!"
 
-// Firebase project API Key
-#define API_KEY "AIzaSyAsZSHG1-VpOdG63fJtrgE_7OovbOgBmkQ"
-
-// RTDB URLefine the RTDB URL */
-#define DATABASE_URL "https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/" 
-
-//Define Firebase Data object
-FirebaseData fbdo;
-
-FirebaseAuth auth;
-FirebaseConfig config;
-
-bool signupOK = false;
+// ESPNOW Message structure
+typedef struct struct_message {
+  uint8_t macAddr[6];
+  char msg[32];
+  int state;
+  float data;
+} struct_message;
 
 // Create a struct_message called myData
 struct_message myData;
@@ -42,12 +30,108 @@ esp_now_peer_info_t peerInfo;
 
 uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
 
-//Nodelist
+// Nodelist
 std::vector<Node> nodeList;
+
+// Receiving data
+Node sender;
+struct_message incomingReadings;
+bool messageReceived;
+char dataPath[32]; 
+char statusPath[34]; 
+
+//--------------------------------------
+//              ESPNOW
+//--------------------------------------
+
+bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr) {
+  struct_message myData;
+  strcpy(myData.msg, message);
+  memcpy(myData.macAddr, addr, 6);
+  myData.state = state;
+  esp_err_t result = esp_now_send(addr, (uint8_t *) &myData, sizeof(myData));
+
+  if (result == ESP_OK) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+// Callback Functions
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("\tLast Packet Send Status: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Successfully Received" : "Failed to Receive");
+}
+
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  Serial.println("--------------------------------");
+  Serial.println("Message Received");
+  Serial.println("--------------------------------\n");
+  memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
+  Serial.print("Bytes received: ");
+  Serial.println(len);
+
+  Serial.print("From: ");
+  for(int i = 0; i < 6; ++i)
+  {
+      Serial.print(mac[i]);
+      Serial.print(" ");
+  }
+  Serial.println();
+
+  Serial.print("Message for macAddr: ");
+  for(int i = 0; i < 6; ++i)
+  {
+    Serial.print(incomingReadings.macAddr[i]);
+    Serial.print(" ");
+  }
+  Serial.println();
+  Serial.print("msg: ");
+  Serial.println(incomingReadings.msg);
+  Serial.print("Data: ");
+  Serial.println(incomingReadings.data);
+  Serial.print("State: ");
+  Serial.println(incomingReadings.state);
+  Serial.println();
+
+  std::vector<Node>::iterator it;
+  int i = 0;
+
+  // Search nodelist for the object that contacted us
+  for(it = nodeList.begin(); it < nodeList.end(); ++it) {
+    if(memcmp(mac, it->getMacAddr(), 6) == 0) {
+      sender = nodeList[i];
+      break;
+    }
+    ++i;
+  }
+
+  strcpy(dataPath, "nodes/");
+  strcat(dataPath, sender.getID());
+  strcat(dataPath, "/data");
+
+  strcpy(statusPath, "nodes/");
+  strcat(statusPath, sender.getID());
+  strcat(statusPath, "/status");
+
+  
+  Serial.print("Data path: ");
+  Serial.print(dataPath);
+  Serial.println();
+
+  Serial.print("Status Path: ");
+  Serial.print(statusPath);
+  Serial.println("\n");
+
+  messageReceived = true;
+
+ }
 
 
 //--------------------------------------
-//              Functions
+//         Start up Functions
 //--------------------------------------
 
 void startWifi() {
@@ -61,31 +145,6 @@ void startWifi() {
 
   WiFi.mode(WIFI_AP_STA);
 
-  Serial.println("OK");
-}
-
-void startFirebase() {
-  Serial.print("Connecting to Firebase...");
-
-  /* Assign the api key (required) */
-  config.api_key = API_KEY;
-
-  /* Assign the RTDB URL (required) */
-  config.database_url = DATABASE_URL;
-
-  /* Sign up */
-  if (Firebase.signUp(&config, &auth, "", "")){
-    signupOK = true;
-  }
-  else{
-    Serial.printf("%s\n", config.signer.signupError.message.c_str());
-  }
-
-  /* Assign the callback function for the long running token generation task */
-  config.token_status_callback = tokenStatusCallback; //see addons/TokenHelper.h
-  
-  Firebase.begin(&config, &auth);
-  Firebase.reconnectWiFi(true);
   Serial.println("OK");
 }
 
@@ -117,7 +176,6 @@ void updateFirebaseHubInfo() {
   }
 }
 
-
 void startEspnow() {
 // Init ESP-NOW
   if (esp_now_init() != ESP_OK) {
@@ -130,7 +188,8 @@ void startEspnow() {
   esp_now_register_send_cb(OnDataSent);
 
   esp_now_register_recv_cb(OnDataRecv);
-  // Register peer
+
+  // Register peers
   memcpy(peerInfo.peer_addr, nodeList[4].getMacAddr(), 6);
   peerInfo.channel = 0;  
   peerInfo.encrypt = false;
@@ -147,7 +206,7 @@ void attemptContactWithEachDevice() {
   int i = 0;
 
   for(it = nodeList.begin(); it < nodeList.end(); ++it) {
-    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, it->getMacAddr()) == true) {
+    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, 0.0f, it->getMacAddr()) == true) {
       Serial.print("Message sent to: ");
       Serial.println(it->getStringMacAddr());
       Serial.println();
@@ -206,16 +265,9 @@ void setup() {
 //--------------------------------------
 
 void loop() {
-  // Send message via ESP-NOW
-  /*
-  if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, nodeList[4].getMacAddr())) {
-    Serial.print("Message sent!");
+  if (messageReceived == true) {
+    Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
+    Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data);
+    messageReceived = false;
   }
-  else
-  {
-    Serial.print("Message failed to send!");
-  }
-
-  delay(2000);
-  */
 }
