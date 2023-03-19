@@ -8,14 +8,46 @@ body, html {
 }
 
 
-header {
-    width: 100%;
-    display: flex;
+.title-header {
+    width: 35vw;
     height: 50px;
-    background-color: #333; /*#333*/
     padding-bottom: 20px;
     padding-left: 10px;
 }
+
+.header {
+    background-color: #333;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+    display: flex;
+}
+
+.user-header {
+    color: white;
+    margin-right: 15px;
+    width: 15vw;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: flex-end;  
+    justify-content: space-around;
+}
+.user-header a {
+    text-decoration: none;
+}
+
+#userlink {
+    font-size: 22px;
+    cursor: default;
+    color: white;
+}
+
+#signoutlink {
+    color: white;
+    font-size: 14px;
+}
+
 
 .container {
     display: flex;
@@ -27,10 +59,10 @@ header {
 /* Content holds main and sidebar */
 .content {
     background-color: black;
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-direction: row-reverse;
-    height: 100%;
+    height: 100vh;
 }
 
 .sidebar, .main {
@@ -218,14 +250,44 @@ ul {
 
 /* Adjust for mobile devices */
 @media (max-width: 600px) {
-    header {
-        text-align: center;
-        padding-bottom: 10px;
-        justify-content: center;
+    .header {
+        background-color: #333;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title-header {
+        width: 100vw;
+        display: flex;
+        min-height: 50px;
+        padding-bottom: 20px;
+        padding-left: 10px;
+        background-color: #333;
+        justify-content: center;  
+    }
+
+    .user-header {
+        color: white;
+        margin-right: 15px;
+        width: 100%;
+        min-height: 50px;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        align-items: center;  
+        background-color: #333;
+    }
+
+    .user-header a {
+        text-decoration: none;
+        height: 50px;
     }
 
     .content {
         flex-direction: column-reverse;
+        background-color: aqua;
+        height: 100%;
     }
 
     .sidebar {
@@ -237,7 +299,7 @@ ul {
     }
 
     .button {
-        margin-top: 20px;
+        margin-top: 5px;
         padding-left: 5px;
         padding-right: 5px;
     }
