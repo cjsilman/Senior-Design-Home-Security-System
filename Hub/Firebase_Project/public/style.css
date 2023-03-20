@@ -9,7 +9,8 @@ body, html {
 
 
 .title-header {
-    width: 35vw;
+    background-color: #333;
+    width: 70vw;
     height: 50px;
     padding-bottom: 20px;
     padding-left: 10px;
@@ -25,13 +26,15 @@ body, html {
 
 .user-header {
     color: white;
+    background-color: #333;
     margin-right: 15px;
-    width: 15vw;
+    width: 20vw;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     align-items: flex-end;  
     justify-content: space-around;
+    text-align: right;
 }
 .user-header a {
     text-decoration: none;
@@ -51,14 +54,14 @@ body, html {
 
 .container {
     display: flex;
-    background-color: blue;
+    background-color: #f9f9f9;
     flex-wrap: wrap;
     align-content: flex-start;
 }
 
 /* Content holds main and sidebar */
 .content {
-    background-color: black;
+    background-color: #f9f9f9;
     width: 100vw;
     display: flex;
     flex-direction: row-reverse;
@@ -90,6 +93,10 @@ body, html {
     min-width: 100px;
 }
 
+#armPageLink {
+    font-size: 20px;
+}
+
 .button a {
     text-decoration: none;
     color: white;
@@ -110,9 +117,12 @@ body, html {
 .main {
     background-color: #f9f9f9;
     margin: 0;
-    padding-left: 10px;
+    padding-left: 0px;
     flex: 4;
 }
+
+
+
 
 .main-header {
     background-color: #f9f9f9;
@@ -120,22 +130,6 @@ body, html {
     margin: 0;
     padding: 0;
     text-align: center;
-}
-
-.armdisarmdiv {
-    display: flex;
-    justify-content: center;
-    background-color: #f9f9f9;
-    height: 250px;
-    width: 100%;
-}
-
-/* Arm/Disarm */
-.arm_disarm {
-    font-size: 30px;
-    border-radius: 50px;
-    height: 250px;
-    width: 250px;
 }
 
 /* Nodes holds each node */
@@ -238,8 +232,73 @@ body, html {
     color: grey;
 }
 
-#active {
-    background-color: #3f8f41;
+/* Arm/Disarm */
+#arm_disarm {
+    font-size: 16px;
+}
+
+/* Hub Info */
+.main2 {
+    background-color: #f9f9f9;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.account {
+    color: #333;
+}
+
+/* User Settings */
+.main3 {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.user-settings-table {
+    width: 50%;
+    text-align: left;
+}
+.user-settings-table tr th {
+    padding-right: 20px;
+}
+
+.user-settings-header {
+    padding-bottom: 10px;
+}
+
+.user-settings-table tr td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-settings-table button {
+    font-size: 16px;
+    margin-top: 10px;
+    border-style: none;
+    background-color: transparent;
+    padding-bottom: 10px;
+}
+
+.user-settings-table button:hover {
+    color: red;
+}
+
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+
+  }
+
+.active {
+    background-color: #55bd59;
 }
 
 ul {

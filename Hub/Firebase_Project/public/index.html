@@ -81,22 +81,62 @@
 
             </div>
 
-            <div class='sidebar'>
-                    <div class = 'button button1 button_slide slide_right'>
-                        <a id = "b1" href="accountsettings.html">System Status</a>
-                    </div>
-                    <div class = 'button button2' id="active">
-                        <a href="">Devices</a>
-                    </div>
-                    <div class = 'button button3 button_slide slide_right'>
-                        <a href="hubsettings.html">Information</a>
+
+            <!-- Hub Settings -->
+            <div class = "main2">
+                <div class="account">
+                    <h4 style="margin-bottom:0px;">(Information is automatically updated by the hub on startup or when hub is in setup)</h4>
+                    <h2 style="margin-top:0px;">Registered Hub Address:</h2>
+                    <h3><span id="hub-address">FF:FF:FF:FF:FF:FF</span></h3>
+                    <h3 style="margin-top:0px; margin-bottom:0px;">Your base station currently has <span id="hub-nodes">X</span> active devices defined</h3>
+                    <p style="margin-top:0px;">Your base station is <span id="hub-node-status">X</span> with what is defined in devices (<span id="server-nodes">X</span>)</p>
                 </div>
+            </div>
+
+            <!-- User Settings -->
+            <div class = "main3">
+                <div class = "user-settings-header">
+                    <h2>
+                        Hello, <span class="user-settings-username"></span>
+                    </h2>
+                    <p>Shown below are all users registered to the hub.</p>
+                    <a href="register.html" class="badge badge-secondary py-1 w-100">Click here to add a user</a>
+                </div>
+                <div class = "user-settings-main">
+                    <table class = "user-settings-table">
+                        <tr>
+                          <th>Name</th>
+                          <th>Username</th>
+                          <th>Email</th>
+                          <th>Role</th>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+
+            <script src="mainContentManager.js"></script>
+            <div class='sidebar'>
+                    <div id = "armPage" class = 'button button1 button_slide slide_right dropdown-content'>
+                        <a id = "armPageLink" href="#">System Status: DISARMED</a>
+                    </div>
+                    <div id = "homePage" class = 'button button2 button_slide slide_right dropdown-content' id = "active">
+                        <a onclick="homePageFunction()" href="#">Devices</a>
+                    </div>
+                    <div id = "hubinfoPage" class = 'button button3 button_slide slide_right dropdown-content'>
+                        <a onclick="hubPageFunction()" href="#">Hub Information</a>
+                    </div>
+                    <div id = "usersPage" class = 'button button3 button_slide slide_right dropdown-content'>
+                        <a onclick="userPageFunction()" href="#">User Settings</a>
+                    </div>
             </div>
         </div>
     </div>
 
+    <script src="auth.js"></script>
     <script src="addNode.js"></script>
     <script src="nodeData.js"></script>
-    <script src="auth.js"></script>
+    <script src="hubsettings.js"></script>
+    <script src="armStatus.js"></script>
+    <script src="userSettings.js"></script>
 </body>
 </html>
