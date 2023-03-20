@@ -31,6 +31,9 @@ esp_now_peer_info_t peerInfo;
 
 uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
 
+int hubstatusTimer = 0;
+char hubStatus[16] = {};
+
 // Nodelist
 std::vector<Node> nodeList;
 
@@ -267,7 +270,7 @@ void setup() {
   Serial.println("--------------------------------------");
   Serial.println("Verification Complete");
   Serial.println("--------------------------------------");
-
+  hubstatusTimer = millis();
 }
 
 //--------------------------------------
@@ -280,4 +283,13 @@ void loop() {
     Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data);
     messageReceived = false;
   }
+
+  if ((millis() - hubstatusTimer) == 10000) {
+    if(Firebase.RTDB.getString(&fbdo, "hub/hStatus/hubStatus")) {
+      const char *str = fbdo.to<const char *>();
+      strcpy(hubStatus, str);
+    }
+    hubstatusTimer = millis();
+  }
+
 }
