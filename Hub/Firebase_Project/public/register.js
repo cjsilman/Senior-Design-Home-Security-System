@@ -67,6 +67,7 @@ function RegisterUser() {
            })
            .then(()=>{
                 alert("User added successfully");
+                window.location = "index.html";
             })
             .catch((error)=>{
                 alert("error" + error);
@@ -84,5 +85,4 @@ function encPass(){
 // Submit Button
 submit.addEventListener("click", ()=> {
     RegisterUser()
-    window.location = "index.html";
 });
