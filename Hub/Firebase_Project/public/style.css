@@ -8,29 +8,64 @@ body, html {
 }
 
 
-header {
-    width: 100%;
-    display: flex;
+.title-header {
+    background-color: #333;
+    width: 70vw;
     height: 50px;
-    background-color: #333; /*#333*/
     padding-bottom: 20px;
     padding-left: 10px;
 }
 
+.header {
+    background-color: #333;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+    display: flex;
+}
+
+.user-header {
+    color: white;
+    background-color: #333;
+    margin-right: 15px;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: flex-end;  
+    justify-content: space-around;
+    text-align: right;
+}
+.user-header a {
+    text-decoration: none;
+}
+
+#userlink {
+    font-size: 22px;
+    cursor: default;
+    color: white;
+}
+
+#signoutlink {
+    color: white;
+    font-size: 14px;
+}
+
+
 .container {
     display: flex;
-    background-color: blue;
+    background-color: #f9f9f9;
     flex-wrap: wrap;
     align-content: flex-start;
 }
 
 /* Content holds main and sidebar */
 .content {
-    background-color: black;
-    width: 100%;
+    background-color: #f9f9f9;
+    width: 100vw;
     display: flex;
     flex-direction: row-reverse;
-    height: 100%;
+    height: 100vh;
 }
 
 .sidebar, .main {
@@ -58,6 +93,10 @@ header {
     min-width: 100px;
 }
 
+#armPageLink {
+    font-size: 20px;
+}
+
 .button a {
     text-decoration: none;
     color: white;
@@ -70,7 +109,7 @@ header {
     transition: ease-out 0.4s;
 }
 
-  .slide_right:hover {
+.slide_right:hover {
     box-shadow: inset 400px 0 0 0 #4CAF50;
 }
 
@@ -78,9 +117,12 @@ header {
 .main {
     background-color: #f9f9f9;
     margin: 0;
-    padding-left: 10px;
+    padding-left: 0px;
     flex: 4;
 }
+
+
+
 
 .main-header {
     background-color: #f9f9f9;
@@ -88,22 +130,6 @@ header {
     margin: 0;
     padding: 0;
     text-align: center;
-}
-
-.armdisarmdiv {
-    display: flex;
-    justify-content: center;
-    background-color: #f9f9f9;
-    height: 250px;
-    width: 100%;
-}
-
-/* Arm/Disarm */
-.arm_disarm {
-    font-size: 30px;
-    border-radius: 50px;
-    height: 250px;
-    width: 250px;
 }
 
 /* Nodes holds each node */
@@ -206,8 +232,73 @@ header {
     color: grey;
 }
 
-#active {
-    background-color: #3f8f41;
+/* Arm/Disarm */
+#arm_disarm {
+    font-size: 16px;
+}
+
+/* Hub Info */
+.main2 {
+    background-color: #f9f9f9;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.account {
+    color: #333;
+}
+
+/* User Settings */
+.main3 {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.user-settings-table {
+    width: 50%;
+    text-align: left;
+}
+.user-settings-table tr th {
+    padding-right: 20px;
+}
+
+.user-settings-header {
+    padding-bottom: 10px;
+}
+
+.user-settings-table tr td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-settings-table button {
+    font-size: 16px;
+    margin-top: 10px;
+    border-style: none;
+    background-color: transparent;
+    padding-bottom: 10px;
+}
+
+.user-settings-table button:hover {
+    color: red;
+}
+
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+
+  }
+
+.active {
+    background-color: #55bd59;
 }
 
 ul {
@@ -218,14 +309,44 @@ ul {
 
 /* Adjust for mobile devices */
 @media (max-width: 600px) {
-    header {
-        text-align: center;
-        padding-bottom: 10px;
-        justify-content: center;
+    .header {
+        background-color: #333;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title-header {
+        width: 100vw;
+        display: flex;
+        min-height: 50px;
+        padding-bottom: 20px;
+        padding-left: 10px;
+        background-color: #333;
+        justify-content: center;  
+    }
+
+    .user-header {
+        color: white;
+        margin-right: 15px;
+        width: 100%;
+        min-height: 50px;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        align-items: center;  
+        background-color: #333;
+    }
+
+    .user-header a {
+        text-decoration: none;
+        height: 50px;
     }
 
     .content {
         flex-direction: column-reverse;
+        background-color: aqua;
+        height: 100%;
     }
 
     .sidebar {
@@ -236,9 +357,37 @@ ul {
         justify-content: center;
     }
 
+    #armPage {
+        width: 100vw;
+    }
+
     .button {
-        margin-top: 20px;
+        margin-top: 5px;
         padding-left: 5px;
         padding-right: 5px;
     }
+    
+    .button_slide {
+        box-shadow: inset 0 0 0 0 #333;
+        -webkit-transition: ease-out 0.4s;
+        -moz-transition: ease-out 0.4s;
+        transition: ease-out 0.4s;
+    }
+    
+      .slide_right:hover {
+        box-shadow: inset 400px 0 0 0 #333;
+    }
+    .user-settings-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .user-settings-table tr td {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        word-wrap: break-word;
+    }
+
   }

@@ -21,6 +21,7 @@ typedef struct struct_message {
   char msg[32];
   int state;
   float data;
+  char stringMacAddr[22];
 } struct_message;
 
 // Create a struct_message called myData
@@ -29,6 +30,9 @@ struct_message myData;
 esp_now_peer_info_t peerInfo;
 
 uint8_t broadcastAddress[] = {0x40, 0x91, 0x51, 0x1D, 0xDF, 0xD0};
+
+int hubstatusTimer = 0;
+char hubStatus[16] = {};
 
 // Nodelist
 std::vector<Node> nodeList;
@@ -44,11 +48,12 @@ char statusPath[34];
 //              ESPNOW
 //--------------------------------------
 
-bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr) {
+bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr, const char* stringMac) {
   struct_message myData;
   strcpy(myData.msg, message);
   memcpy(myData.macAddr, addr, 6);
   myData.state = state;
+  strcpy(myData.stringMacAddr, stringMac);
   esp_err_t result = esp_now_send(addr, (uint8_t *) &myData, sizeof(myData));
 
   if (result == ESP_OK) {
@@ -94,6 +99,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.println(incomingReadings.data);
   Serial.print("State: ");
   Serial.println(incomingReadings.state);
+  Serial.print("String Mac: ");
+  Serial.println(incomingReadings.stringMacAddr);
   Serial.println();
 
   std::vector<Node>::iterator it;
@@ -183,22 +190,26 @@ void startEspnow() {
     return;
   }
 
-  // Once ESPNow is successfully Init, we will register for Send CB to
-  // get the status of Trasnmitted packet
+  // Once ESPNow is successfully initialized, we will register for Send CB to
+  // get the status of Transmitted packet
   esp_now_register_send_cb(OnDataSent);
 
   esp_now_register_recv_cb(OnDataRecv);
 
   // Register peers
-  memcpy(peerInfo.peer_addr, nodeList[4].getMacAddr(), 6);
   peerInfo.channel = 0;  
   peerInfo.encrypt = false;
+
+  std::vector<Node>::iterator it;
+  int i = 0;
   
-  // Add peer        
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
+  for(it = nodeList.begin(); it < nodeList.end(); ++it) {
+    memcpy(peerInfo.peer_addr, it->getMacAddr(), 6);
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+      Serial.println("Failed to add peer");
+    }
   }
+  
 }
 
 void attemptContactWithEachDevice() {
@@ -206,15 +217,17 @@ void attemptContactWithEachDevice() {
   int i = 0;
 
   for(it = nodeList.begin(); it < nodeList.end(); ++it) {
-    if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, 0.0f, it->getMacAddr()) == true) {
-      Serial.print("Message sent to: ");
-      Serial.println(it->getStringMacAddr());
-      Serial.println();
-    }
-    else{
-      Serial.print("Message failed to send to: ");
-      Serial.println(it->getStringMacAddr());
-      Serial.println();
+    if(it->getStatus() == -1) {
+      Serial.print("Status for "); Serial.print(it->getStringMacAddr()); Serial.println(" is -1");
+      if (sendMessageToDevice("This is the hub saying hello!", HUB_OK, 0.0f, it->getMacAddr(), it->getStringMacAddr()) == true) {
+        Serial.println("Initial Message Sent");
+      }
+      else {
+        Serial.print("Message failed to send to: ");
+        Serial.println(it->getStringMacAddr());
+        Serial.println();
+      }
+      delay(1000);
     }
   }
   delay(100);
@@ -257,7 +270,7 @@ void setup() {
   Serial.println("--------------------------------------");
   Serial.println("Verification Complete");
   Serial.println("--------------------------------------");
-
+  hubstatusTimer = millis();
 }
 
 //--------------------------------------
@@ -270,4 +283,13 @@ void loop() {
     Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data);
     messageReceived = false;
   }
+
+  if ((millis() - hubstatusTimer) == 10000) {
+    if(Firebase.RTDB.getString(&fbdo, "hub/hStatus/hubStatus")) {
+      const char *str = fbdo.to<const char *>();
+      strcpy(hubStatus, str);
+    }
+    hubstatusTimer = millis();
+  }
+
 }

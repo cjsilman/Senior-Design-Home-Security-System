@@ -66,6 +66,7 @@ void makeNodeList(FirebaseData *fbdo , std::vector<Node> &nodeList) {
         node.setName(values[i+3]);
         node.setMacAddr(values[i+2]); //Here because it uses setName function
         node.setStringMacAddr(values[i+2]);
+        node.setStatus(values[i+4].toInt());
         node.setType(values[i+5]);
         nodeList.push_back(node);
     }
