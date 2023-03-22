@@ -17,6 +17,8 @@
 #include "esp_now.h"
 #include <string.h>
 #include <Arduino.h>
+#include <esp_wifi.h>
+#include <WiFi.h>
 
 extern uint8_t hubAddr[6];
 
@@ -25,6 +27,7 @@ typedef struct struct_message {
   char msg[32];
   int state;
   float data;
+  char stringMacAddr[22];
 } struct_message;
 
 
@@ -37,5 +40,8 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status); //What t
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len); //What to do on data receive
 
+void startWiFi();
+
+int32_t getWiFiChannel(const char *ssid);
 
 #endif
