@@ -20,7 +20,7 @@ let i = 0;
 btn1.addEventListener('click' ,e=>{
         vidRef.child('image'+ i + '.jpg').getDownloadURL().then((url)=> {
         document.querySelector('img').src = url; 
-        //console.log(url);
+        console.log(url);
     }).catch((error) => {       
 }); 
    if( i < 149){  
@@ -47,8 +47,8 @@ function listAdd() {
    
     
 function onChange() {
-    var value = select.value;
-    var text = select.options[select.selectedIndex].text;
-    var vidRef = storageRef.child(text + '/');
+     value = select.value;
+     text = select.options[select.selectedIndex].text;
+     vidRef = storageRef.child(text + '/');
     console.log(value, text);
   }

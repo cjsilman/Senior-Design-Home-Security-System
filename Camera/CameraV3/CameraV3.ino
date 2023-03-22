@@ -65,7 +65,7 @@ while(HubState == false) {
   }
 }
 
-<<<<<<< HEAD
+
   Rapid();
   
   FirebaseUpl();
@@ -75,9 +75,9 @@ while(HubState == false) {
   pinMode(GPIO_NUM_4, INPUT);
   //Wake if 13 High
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 1);
-=======
 
->>>>>>> b3bd8657458246159734d25a7667df80f8c3176f
+
+
  
 if(SysArmed == true)   {
 
