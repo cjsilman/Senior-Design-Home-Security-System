@@ -29,11 +29,12 @@ void espnowSetup() {
   addHubToPeer();
 }
 
-bool sendMessageToDevice(const char * message, int state, uint8_t* addr) {
+bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr) {
   struct_message myData;
   strcpy(myData.msg, message);
   memcpy(myData.macAddr, addr, 6);
   myData.state = state;
+  myData.data = data;
   esp_err_t result = esp_now_send(addr, (uint8_t *) &myData, sizeof(myData));
 
   if (result == ESP_OK) {
@@ -68,6 +69,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.println();
   Serial.print("msg: ");
   Serial.println(incoming.msg);
+  Serial.print("data: ");
+  Serial.println(incoming.data);
   Serial.print("State: ");
   Serial.println(incoming.state);
   Serial.println();

@@ -25,9 +25,21 @@ deviceForm.addEventListener('submit', (e)=>{
 
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${deviceName}</h3>`;
-    deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${deviceMac}')" class="remove-device-button">[delete]</button></div>`;
-    deviceBox.innerHTML += `<p>${deviceMac}</p>`;
-    deviceBox.innerHTML += `<p>${deviceType}</p>`;
+    deviceBox.innerHTML +=  `<div class="delete-button"><button onclick="removeDevice('${deviceMac}')" class="remove-device-button">[delete]</button></div>`;
+    if (deviceType == "Temperature Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">&#127777 Temp: <span id = "${deviceMac}-data">__</span></p>`;
+    }
+    if (deviceType == "Camera") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${deviceMac}-data">No detect</span></p>`;
+    }
+    if (deviceType == "Glassbreak Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${deviceMac}-data">Silent</span></p>`;
+    }
+    if (deviceType == "Door Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${deviceMac}-data">Closed</span></p>`;
+    }
+    deviceBox.innerHTML += `<p class="node_mac">${deviceMac}</p>`;
+    deviceBox.innerHTML += `<p class="node_type">${deviceType}</p>`;
     deviceBox.id = deviceMac;
     
     nodeList.insertBefore(deviceBox, nodeCreator);

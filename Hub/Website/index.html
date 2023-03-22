@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href='style.css' rel='stylesheet' />
+    <link rel="stylesheet" href="hubSettings.css">
 </head>
 <body>
     <div class = "container">
@@ -14,7 +15,7 @@
         </header>
 
         <div class = "content">
-
+            <!-- index.html -->
             <div class = "main">
 
                 <div class = "main-header">
@@ -60,18 +61,36 @@
                         </form>
                     </div>
                 </div>
-
             </div>
 
+            <!-- Account Settings -->
+            <div class = "main2">
+                <div class = "armdisarmdiv">
+                    <button id="arm_disarm">DISARMED</button>
+                </div>
+            </div>
+
+            <!-- Hub Settings -->
+            <div class = "main3">
+                <div class="account">
+                    <h4 style="margin-bottom:0px;">(Hub settings are automatically updated by the hub on startup/in setup)</h4>
+                    <h2 style="margin-top:0px;">Registered Hub Address:</h2>
+                    <h3><span id="hub-address">FF:FF:FF:FF:FF:FF</span></h3>
+                    <h3 style="margin-top:0px; margin-bottom:0px;">There are currently <span id="hub-nodes">6</span> active nodes</h3>
+                    <p style="margin-top:0px;">The hub is <span id="hub-node-status">X</span> with the server</p>
+                </div>
+            </div>
+
+            <script src="mainContentManager.js"></script>
             <div class='sidebar'>
-                    <div class = 'button button1 button_slide slide_right dropdown-content'>
-                        <a id = "b1" href="accountsettings.html">System Status</a>
+                    <div id = "armPage" class = 'button button1 button_slide slide_right dropdown-content'>
+                        <a onclick="armPageFunction()" href="#">System Status</a>
                     </div>
-                    <div class = 'button button2 button_slide slide_right dropdown-content' id = "active">
-                        <a href="index.html">Devices</a>
+                    <div id = "homePage" class = 'button button2 button_slide slide_right dropdown-content' id = "active">
+                        <a onclick="homePageFunction()" href="#">Devices</a>
                     </div>
-                    <div class = 'button button3 button_slide slide_right dropdown-content'>
-                        <a href="hubsettings.html">Information</a>
+                    <div id = "hubinfoPage" class = 'button button3 button_slide slide_right dropdown-content'>
+                        <a onclick="hubPageFunction()" href="#">Information</a>
                 </div>
             </div>
         </div>
@@ -79,6 +98,8 @@
 
     <script src="script.js"></script>
     <script src="addNode.js"></script>
+    <script src="status.js"></script>
+    
 
 </body>
 </html>

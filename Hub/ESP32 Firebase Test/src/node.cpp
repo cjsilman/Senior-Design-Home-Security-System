@@ -23,6 +23,10 @@ void Node::setType(String input) {
     input.toCharArray(type, input.length()+1);
 } 
 
+void Node::setStatus(int input) {
+    status = input;
+} 
+
 char * Node::getID() {
     return ID;
 }
@@ -50,6 +54,10 @@ void Node::printMacAddr() {
 
 char * Node::getType() {
     return type;
+}
+
+int Node::getStatus() {
+    return status;
 }
 
 void Node::setMacAddr(String input) {

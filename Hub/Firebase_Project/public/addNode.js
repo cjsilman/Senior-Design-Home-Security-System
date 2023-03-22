@@ -41,7 +41,9 @@ deviceForm.addEventListener('submit', (e)=>{
     nodesRef.push({
         name: deviceName,
         macAddr: deviceMac,
-        type: deviceType
+        type: deviceType,
+        status: -1,
+        data: -1
     });
 
     deviceNameInput.value = "";
@@ -65,8 +67,20 @@ function nodeHtmlFromObject(node) {
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${node.name}</h3>`;
     deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button></div>`;
-    deviceBox.innerHTML += `<p>${node.macAddr}</p>`;
-    deviceBox.innerHTML += `<p>${node.type}</p>`;
+    if (node.type == "Temperature Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">&#127777 Temp: <span  id = "${node.macAddr}-data">__</span></p>`;
+    }
+    if (node.type == "Camera") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${node.macAddr}-data">No detect</span></p>`;
+    }
+    if (node.type == "Glassbreak Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${node.macAddr}-data">Silent</span></p>`;
+    }
+    if (node.type == "Door Sensor") {
+        deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${node.macAddr}-data">Closed</span></p>`;
+    }
+    deviceBox.innerHTML += `<p class="node_mac">${node.macAddr}</p>`;
+    deviceBox.innerHTML += `<p class="node_type">${node.type}</p>`;
     deviceBox.id = `${node.macAddr}`;
     return deviceBox;
 };
