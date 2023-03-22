@@ -16,6 +16,8 @@ void setup() {
 
   //Begin Serial Comms
   Serial.begin(115200);
+  
+  digitalWrite(GPIO_NUM_16,0);
 
   while(HubConnect == false) {
      HubConnect = true;
@@ -34,9 +36,11 @@ void setup() {
   
   FirebaseUpl();
   delay(1000);
-
+  
+  
+  pinMode(GPIO_NUM_4, INPUT);
   //Wake if 13 High
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 1);
  
   Serial.println("Entering sleep mode");
 
