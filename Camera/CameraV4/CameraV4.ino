@@ -21,8 +21,6 @@ void setup() {
 
   //Begin Serial Comms
   Serial.begin(115200);
-  
-  digitalWrite(GPIO_NUM_16,0);
 
 /*
 //Mac Address
@@ -64,18 +62,6 @@ while(HubState == false) {
     Serial.println("System Disarmed.");
   }
 }
-
-
-  Rapid();
-  
-  FirebaseUpl();
-  delay(1000);
-  
-  
-  pinMode(GPIO_NUM_4, INPUT);
-  //Wake if 13 High
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 1);
-
 
 
  
