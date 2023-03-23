@@ -7,7 +7,7 @@ esp_now_peer_info_t peerInfo;
 uint8_t hubAddr[6] = {0x44, 0x17, 0x93, 0x5F, 0xB7, 0xB0};
 
 //MUST BE CALLED ONLY AFTER WIFI IS SETUP
-constexpr char WIFI_SSID[] = "lanboyp";
+constexpr char WIFI_SSID[] = "Chris's Phone";
 
 void startWifi() {
     WiFi.mode(WIFI_STA);
