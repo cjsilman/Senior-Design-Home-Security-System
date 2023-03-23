@@ -42,16 +42,17 @@ header {
     padding-bottom: 10px;
 }
 
+/* Sidebar */
 .sidebar {
     flex: 1;
     padding: 0px;
-    margin: 0;
-    background-color: #333;
-    min-height: 1000px;
+    margin: 0px;
+    background-color: red;
+    height: 100vh;
 }
 
 .button {
-    background-color: #333;
+    background-color: blue;
     padding: 20px;
     margin: 0px;
     padding-left: 0px;
@@ -78,7 +79,21 @@ header {
 
 /* Main holds main-header, devices, and device form */
 .main {
-    background-color: #f9f9f9;
+    background-color: orange;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+}
+
+.main2 {
+    background-color: orange;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+}
+
+.main3 {
+    background-color: orange;
     margin: 0;
     padding-left: 10px;
     flex: 4;
@@ -95,9 +110,13 @@ header {
 .armdisarmdiv {
     display: flex;
     justify-content: center;
-    background-color: #f9f9f9;
+    background-color: red;
     height: 250px;
     width: 100%;
+}
+
+.account {
+    color: #333;
 }
 
 /* Arm/Disarm */
@@ -115,14 +134,14 @@ header {
 
 /* Nodes holds each node */
 .nodes {
-    background-color: #f9f9f9;
+    background-color: green;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     align-content: flex-start;
     text-align: center;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
 }
 
 .node {
@@ -212,7 +231,7 @@ header {
     color: grey;
 }
 
-#active {
+.active {
     background-color: #3f8f41;
 }
 

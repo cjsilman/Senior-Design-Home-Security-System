@@ -43,7 +43,7 @@ function checkData(macAddr, status, value, type) {
                 data.innerHTML = "null";
         }
     }
-    if (status == 0) {
+    if (status == 1) {
         switch(type) {
             case "Camera":
                 data.innerHTML = "No detect";
@@ -65,7 +65,7 @@ function checkData(macAddr, status, value, type) {
                 data.innerHTML = "null";
         }
     }
-    if (status == 1) {
+    if (status == 2) {
         switch(type) {
             case "Camera":
                 data.innerHTML = "Detection";

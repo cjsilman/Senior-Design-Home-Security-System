@@ -105,14 +105,20 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
   std::vector<Node>::iterator it;
   int i = 0;
+  bool nodeFound = false;
 
   // Search nodelist for the object that contacted us
   for(it = nodeList.begin(); it < nodeList.end(); ++it) {
     if(memcmp(mac, it->getMacAddr(), 6) == 0) {
       sender = nodeList[i];
+      nodeFound = true;
       break;
     }
     ++i;
+  }
+
+  if (nodeFound == false) {
+    return;
   }
 
   strcpy(dataPath, "nodes/");
