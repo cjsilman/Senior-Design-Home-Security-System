@@ -14,11 +14,12 @@ void startWifi() {
 
     int32_t channel = getWiFiChannel(WIFI_SSID);
 
-    WiFi.printDiag(Serial); // Uncomment to verify channel number before
+    //WiFi.printDiag(Serial); // Uncomment to verify channel number before
     esp_wifi_set_promiscuous(true);
     esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
     esp_wifi_set_promiscuous(false);
-    WiFi.printDiag(Serial); // Uncomment to verify channel change after
+    Serial.print("MAC: "); Serial.println(WiFi.macAddress());
+    //WiFi.printDiag(Serial); // Uncomment to verify channel change after
 
     Serial.println("OK");
 }
@@ -104,6 +105,7 @@ void waitForHub() {
   Serial.println("Writing to EEPROM");
   EEPROM.write(3, 255);
   EEPROM.commit();
+  sendMessageToDevice("Startup Complete!", HUB_OK);
   messageReceived = false;
 }
 
@@ -128,12 +130,10 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.print("\r\nLast Packet Send Status:\t");
   if (status == ESP_NOW_SEND_SUCCESS) {
     Serial.println("Delivery Success");
-    sendMessageToDevice("Startup Complete!", HUB_OK);
   }
   else {
     Serial.println("Delivery Fail");
   }
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 
 }
 
