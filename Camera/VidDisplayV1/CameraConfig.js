@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
     apiKey: "AIzaSyCwasbPktOgE6gTIMXMlVcpc0aPidCtDgs",
     authDomain: "esp32-cam-photo-upload.firebaseapp.com",
@@ -14,7 +13,10 @@ const firebaseConfig = {
   
   var database = firebase.database();
   var stor = firebase.storage();
- 
+  
+
+  //Storage References
   var storageRef = stor.ref();
   var AllVidsRef = storageRef.child('videos/');
+  var loadingRef = storageRef.child('loading/loadingVid.mp4');
   
