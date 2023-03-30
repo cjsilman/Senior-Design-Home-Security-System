@@ -13,6 +13,7 @@ const addDeviceButton = document.querySelector("#add-device-button");
 const deviceNameInput = document.querySelector("#device-name");
 const deviceMacInput = document.querySelector("#mac-addr");
 const deviceSelectorInput = document.querySelector("#type-selector");
+const deviceFormTempInput = document.querySelector("#device-form-temp-input");
 
 //Nodes List
 var totalNodes = 0;
@@ -24,11 +25,28 @@ nodesRef.on("child_added", function(snap) {
     updateTotalNodes();
 });
 
+// When add device + is clicked, show form
 addDeviceButton.addEventListener("click", ()=> {
     nodeCreator.style.display = 'none';
     nodeList.appendChild(deviceForm);
     deviceForm.style.display = 'flex'; 
 });
+
+// If temp sensor is selected, add in the temp range input
+function updateDeviceForm() {
+    if(deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text == "Temperature Sensor") {
+        deviceFormTempInput.innerHTML = `
+        <label style="font-size: 14px;" for="lower-temp"></label>
+        <span style="font-size: 14px;">Safe&degF:</span>
+        <input id="lower-temp" style="width: 36px; height: 15px;" placeholder="0" type="number">
+        <span style="font-size: 14px;">-</span>
+        <input style="width: 36px; height: 15px;" placeholder="30" type="number">`;
+    }
+    else
+    {
+        deviceFormTempInput.innerHTML = "";
+    }
+}
 
 deviceForm.addEventListener('submit', (e)=>{
     console.log("Submitted!");
@@ -119,3 +137,4 @@ function updateTotalNodes() {
         numberOfNodes: totalNodes
     });
 };
+

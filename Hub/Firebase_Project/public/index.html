@@ -15,7 +15,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-
+    
     <script src="firebaseConfig.js"></script>
 </head>
 <body>
@@ -63,12 +63,14 @@
                                 </li>
                                 <li>
                                     <label for="type">Type:</label>
-                                    <select id="type-selector" name="type">
+                                    <select id="type-selector" name="type" onchange="updateDeviceForm()">
                                         <option value="Camera">Camera</option>
                                         <option value="Glassbreak Sensor">Glassbreak Sensor</option>
                                         <option value="Temperature Sensor">Temperature Sensor</option>
                                         <option value="Door Sensor">Door Sensor</option>
                                     </select> 
+                                </li>
+                                <li id = "device-form-temp-input">
                                 </li>
                                 <li>
                                     <button type="submit" value="add">Add Device</button>
@@ -114,19 +116,48 @@
                 </div>
             </div>
 
+            <!-- Notification Log -->
+            <div class = "main4">
+                <div class = "log-main">
+                    <h2>Device Notification Log</h2>
+                    <p>Shown below are all the notifications you have received while the system is armed.</p>
+                    <h2 id="log-date-header">Current date</h2>
+                    <a class="log-clear" onclick="clearNotifs()" href="#">Click here to dismiss all notifications</a>
+                    <table class = "log-table">
+                        <tr>
+                            <th>Time</th>
+                            <th>Device</th>
+                            <th>Msg</th>
+                        </tr>
+                    </table>
+                    <p>Download a date's JSON log file:</p>
+                    <div id="log-download">
+                        <input type="date" id="log-date" name="log-date">
+                        <div id="log-download-options">
+                            <a id="log-download-button" onclick="downloadJSON()" href="#">Download JSON</a>
+                            <a id="log-view-button" onclick="viewJSON()" href="#">View JSON</a>
+                        </div>
+                        <p id="invalid-msg"></p>
+                    </div>
+                </div>
+            </div>
+
             <script src="mainContentManager.js"></script>
             <div class='sidebar'>
                     <div id = "armPage" class = 'button button1 button_slide slide_right dropdown-content'>
                         <a id = "armPageLink" href="#">System Status: DISARMED</a>
                     </div>
-                    <div id = "homePage" class = 'button button2 button_slide slide_right dropdown-content' id = "active">
-                        <a onclick="homePageFunction()" href="#">Devices</a>
+                    <div onclick="homePageFunction()" style="cursor: pointer" id = "homePage" class = 'button button2 button_slide slide_right dropdown-content' id = "active">
+                        <a href="#">Devices</a>
                     </div>
-                    <div id = "hubinfoPage" class = 'button button3 button_slide slide_right dropdown-content'>
-                        <a onclick="hubPageFunction()" href="#">Hub Information</a>
+                    <div onclick="hubPageFunction()" style="cursor: pointer" id = "hubinfoPage" class = 'button button3 button_slide slide_right dropdown-content'>
+                        <a href="#">Hub Information</a>
                     </div>
-                    <div id = "usersPage" class = 'button button3 button_slide slide_right dropdown-content'>
-                        <a onclick="userPageFunction()" href="#">User Settings</a>
+                    <div onclick="userPageFunction()" style="cursor: pointer" id = "usersPage" class = 'button button4 button_slide slide_right dropdown-content'>
+                        <a href="#">User Settings</a>
+                    </div>
+                    <div onclick="logPageFunction()" style="cursor: pointer" id = "logPage" class = 'button button5 button_slide slide_right dropdown-content'>
+                        <div id="log-link"><a id="log-text" href="#">Notification Log</a><span id="notification-amount"></span></div>
                     </div>
             </div>
         </div>
@@ -134,9 +165,10 @@
 
     <script src="auth.js"></script>
     <script src="addNode.js"></script>
-    <script src="nodeData.js"></script>
+    <script src="nodeStatus.js"></script>
     <script src="hubsettings.js"></script>
     <script src="armStatus.js"></script>
     <script src="userSettings.js"></script>
+    <script src="notificationLog.js"></script>
 </body>
 </html>
