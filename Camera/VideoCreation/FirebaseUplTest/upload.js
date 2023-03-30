@@ -71,9 +71,15 @@ function listAdd() {
     
 function onChange() {
      value = select.value;
+<<<<<<< HEAD
      txt = select.options[select.selectedIndex].text;
      vidRef = AllVidsRef.child(txt + '/');
      retImageNumber();
+=======
+     text = select.options[select.selectedIndex].text;
+     vidRef = storageRef.child(text + '/');
+    console.log(value, text);
+>>>>>>> 5ffe4331dc2dbf675a82e0e209bfa6f7ce9226b5
   }
 
 function videosNameRetrieve() {

@@ -34,7 +34,8 @@
 
 const char* ssid = "JD2.4";
 const char* password ="Hal9cour9!";
-
+//JACK WIFI ssid = JD2.4 ; pw = Hal9cour9!
+//CHRIS HOTSPOT ssid = Chris's Phone ; pw = dbym572)
 
 //-------------------------------------------------------
 //Pin Definitions For Cam
@@ -60,8 +61,8 @@ const char* password ="Hal9cour9!";
 //Variable Definitions
 
 //Image Aquisition
-unsigned int delayTime = 200; //Delay Between Image Capture
-unsigned int picNum = 60; //Number of Photos to be Captured
+unsigned int delayTime = 67; //Delay Between Image Capture
+unsigned int picNum = 150; //Number of Photos to be Captured
 unsigned int fps = 1000/delayTime; //Frames Captured per second
 unsigned int vidlength = delayTime * picNum; //ms calculation of recording length
 
@@ -252,8 +253,10 @@ void FirebaseUpl() {
     String path2 = "/" + String(ProgCount) + path;
   //Upoad Image to Firebase
   if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path2, "image/jpeg")){
+    Serial.print("------ Photo ");
     Serial.print(savedPhotos );
-    Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
+    Serial.println(" Uploaded to Firebase ------");
+    //Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
   }
    else{
      Serial.println(fbdo.errorReason());
