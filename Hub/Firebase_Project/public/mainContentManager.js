@@ -1,6 +1,7 @@
 const devices = document.querySelector(".main");
 const info = document.querySelector(".main2");
 const users = document.querySelector(".main3");
+const log = document.querySelector(".main4");
 
 
 
@@ -10,9 +11,11 @@ function homePageFunction() {
     devices.style.display = "inline";
     info.style.display = "none";
     users.style.display = "none";
+    log.style.display = "none";
     hubinfoPage.classList.remove("active");
     usersPage.classList.remove("active");
     homePage.classList.add("active");
+    logPage.classList.remove("active");
 
 };
 
@@ -21,9 +24,11 @@ function hubPageFunction() {
     devices.style.display = "none";
     info.style.display = "inline";
     users.style.display = "none";
+    log.style.display = "none";
     homePage.classList.remove("active");
     usersPage.classList.remove("active");
     hubinfoPage.classList.add("active");
+    logPage.classList.remove("active");
 };
 
 function userPageFunction() {
@@ -31,7 +36,23 @@ function userPageFunction() {
     devices.style.display = "none";
     info.style.display = "none";
     users.style.display = "inline";
+    log.style.display = "none";
     homePage.classList.remove("active");
     hubinfoPage.classList.remove("active");
     usersPage.classList.add("active");
+    logPage.classList.remove("active");
+};
+
+
+
+function logPageFunction() {
+    const logPage = document.getElementById("logPage");
+    devices.style.display = "none";
+    info.style.display = "none";
+    users.style.display = "none";
+    log.style.display = "inline";
+    homePage.classList.remove("active");
+    hubinfoPage.classList.remove("active");
+    usersPage.classList.remove("active");
+    logPage.classList.add("active");
 };

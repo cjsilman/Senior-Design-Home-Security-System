@@ -1,5 +1,5 @@
 var databaseNodes = database.ref('nodes');
-var databaseServerData = database.ref('server');
+var databaseServerData = database.ref('server/data');
 const databaseServerNodes = database.ref('server/data/numberOfNodes');
 const databaseHubAddress = database.ref('hub/hubAddress');
 const databaseHubNodes = database.ref('hub/numberOfNodes');

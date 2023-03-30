@@ -4,11 +4,11 @@ var count = 1;
 
 userListRef.on("child_added", function(snap) {
     console.log("Added", snap.key, snap.val());
-    addRowToTable(snap.key, snap.val());
+    addRowToUserTable(snap.key, snap.val());
 });
 
 
-function addRowToTable(key, user) {
+function addRowToUserTable(key, user) {
     var row = usersTable.insertRow();
     var nameCell = row.insertCell(0);
     var usernameCell = row.insertCell(1);
