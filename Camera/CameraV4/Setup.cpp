@@ -60,8 +60,8 @@ const char* password ="Hal9cour9!";
 //Variable Definitions
 
 //Image Aquisition
-unsigned int delayTime = 200; //Delay Between Image Capture
-unsigned int picNum = 60; //Number of Photos to be Captured
+unsigned int delayTime = 67; //Delay Between Image Capture
+unsigned int picNum = 150; //Number of Photos to be Captured
 unsigned int fps = 1000/delayTime; //Frames Captured per second
 unsigned int vidlength = delayTime * picNum; //ms calculation of recording length
 
@@ -249,18 +249,20 @@ void FirebaseUpl() {
   unsigned int savedPhotos = 0;
   while(savedPhotos < picNum) {  //replace 1 w picNum
     String path = "/image" + String(savedPhotos) + ".jpg";
-    String path2 = "/" + String(ProgCount) + path;
-  //Upoad Image to Firebase
-  if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path2, "image/jpeg")){
-    Serial.print(savedPhotos );
-    Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
-  }
-   else{
-     Serial.println(fbdo.errorReason());
-  }
+    String path2 = "/videos/" + String(ProgCount) + path;
+    //Upoad Image to Firebase
+    if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path2, "image/jpeg")){
+      Serial.print("Photo Number ");
+      Serial.print(savedPhotos );
+      Serial.println(" Uploaded");
+      //Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
+     }
+     else{
+      Serial.println(fbdo.errorReason());
+     }
   ++savedPhotos;
   }
-  }
+ }
   
 }
 

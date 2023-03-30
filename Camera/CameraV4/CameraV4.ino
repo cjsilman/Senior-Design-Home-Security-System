@@ -11,7 +11,7 @@
 #include "espnowHelper.h"
 #include <esp_now.h>
 
-bool HubConnect = false;
+bool HubConnect = true;
 bool SysArmed = true;
 
 
@@ -69,7 +69,7 @@ while(HubState == false) {
 delay(2000);
  
 if(SysArmed == true)   {
-    sendMessageToDevice("Cam Starting Video",CAM_RDY);
+    //sendMessageToDevice("Cam Starting Video",CAM_RDY);
 
     CamConfig();
     Serial.println("Camera Configured");

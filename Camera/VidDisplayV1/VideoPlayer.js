@@ -1,17 +1,27 @@
 var videos = [];
 var images = [];
 var select = document.getElementById("vidSel");
-var hidden = document.getElementById("storedImgs");
+var container = document.getElementById("video");
 
 var txt;
 var vidRef;
 var startUp = true;
+var pause = false;
 
+var btn1 = document.querySelector(".PlayBTN");
+var btn2 = document.querySelector(".PauseBTN");
 
 videoList();
+
 select.onchange = onChange;
 
+btn1.addEventListener('click' ,e=>{
+    playSelected();
+});
 
+btn2.addEventListener('click', e=> {
+    pause = true;
+});
 
 
 function videoList() {
@@ -39,10 +49,18 @@ function onChange() {
      txt = select.options[select.selectedIndex].text;
      vidRef = AllVidsRef.child(txt + '/');
      console.log(txt);
-     if(startUp = true) {
-        setTimeout(()=>{onStart();},100);
-        startUp = false; 
+
+     
+     if(startUp == false) {
+        container.innerHTML = "";
+        
      }
+     else {
+        
+        onStart();
+        //startUp = false; 
+     }
+     
     loadImages();  
 }
 
@@ -51,37 +69,48 @@ function onStart() {
     document.getElementById('default').style.display= 'none';
     document.getElementById('PlayBTN').style.visibility = 'visible';
     document.getElementById('PauseBTN').style.visibility = 'visible';
+    startUp = false; 
 }
 
 function loadImages() {
-    images = [];
-    vidRef.listAll().then((res)=> {
-        res.items.forEach((imgRef)=>{
-            images.push(imgRef.name);
-        });
-    });
-    
-    console.log(images);
-    setTimeout(()=>{toWebpage();},200);
-    
+    let j = 0;
+    setInterval(()=>{if( j < 150) {
+        
+        var temp = document.createElement("img");
+        temp.setAttribute("class", "hiddenImages");
+        temp.setAttribute("id", "image" + j);
+        vidRef.child("image"+ j + ".jpg").getDownloadURL().then((url)=> { 
+            temp.setAttribute("src", url);
+            //onsole.log(url);
+            //console.log(temp);
+            container.appendChild(temp)
+            //container.innerHTML=`<img class="hiddenImgs" id = "image${i}" src = "${url}">`
+       })
+       j++;
+      
+      
+   }},5);
 }
 
-function toWebpage() {
     
-    console.log(images.length);
-    var i = 0;
-    while(i < images.length) {
-        var temp = document.createElement("img");
-        temp.setAttribute("id", images[i]);
-        temp.setAttribute("height",400);
-        temp.setAttribute("width",400);
-        vidRef.child(images[i]).getDownloadURL().then((url)=> { 
-             temp.setAttribute("src", url);
-             console.log(url);
-             console.log(temp);
-             hidden.appendChild(temp);
-        })
+
+function playSelected() {
+   
+   var i = 0;
+   setInterval(()=> {if(i < 150) {
+        if(i > 0) {
+            //let j = i - 1;
+            let previous = document.getElementById(`image${i-1}`);
+            previous.setAttribute("class", "hiddenImages");
+        }
+        let current = document.getElementById(`image${i}`);
+        current.setAttribute("class", "displayImages");
         i++;
-       
-    }
+
+    };},67);
+   
+
+   
+
+  
 }

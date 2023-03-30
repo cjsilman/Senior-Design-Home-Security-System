@@ -15,18 +15,29 @@ header {
     padding-left: 10px;
 }
 
-.displayBox {
-    display: none;
-    border: #333;
+div {
+    display: flex;
+    justify-content: center;
 }
-
 
 .default {
    visibility: visible; 
 }
 
-.storedImgs {
+
+
+.hiddenImages {
     display: none;
+    height: 400;
+    width: 400;
+
+
+}
+.displayImages {
+    display: flex;
+    height: 400;
+    width: 400;
+    align-content: center;
 }
 
 
