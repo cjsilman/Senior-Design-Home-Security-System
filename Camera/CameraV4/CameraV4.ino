@@ -11,8 +11,10 @@
 #include "espnowHelper.h"
 #include <esp_now.h>
 
-unsigned long start_time = millis();
-unsigned long current_time;
+bool HubConnect = false;
+bool SysArmed = true;
+
+
 
 void setup() {
   
@@ -22,34 +24,35 @@ void setup() {
   //Begin Serial Comms
   Serial.begin(115200);
 
-/*
+
 //Mac Address
   Serial.println("-----------------------------");
   Serial.print("Mac Address : ");
   Serial.println(WiFi.macAddress());
   Serial.println("-----------------------------");
-*/
+
 
 while(HubConnect == false) {
     WiFi.mode(WIFI_AP_STA);
     espnowSetup();
-    current_time = millis();
-    if(something about millis minus current time here) {
-      if (sendMessageToDevice("This is the camera saying hello!", CAM_OK)) {
-        Serial.println("Message Outgoing.");
-        timer = 15000;
-      }
-      else 
-      {
-        Serial.println("Message Failed.");
-        delay(1000);
-      }
+    unsigned long timer = millis();
+    if(sendMessageToDevice("This is the Camera!",CAM_OK)){
+      HubConnect = true;
+
+    }
+    else {
+      Serial.println("Message Send Fail, Sending Again.");
+    }
+    if(timer > 15000) {
+      Serial.println("-----Failed to Connect-----");
+      Serial.print("Going to Sleep");
+      delay(1000);
+      esp_deep_sleep_start();
     }
     
-    delay(1000);
   }
 
-
+/*
 while(HubState == false) {
   if(incoming.state == HUB_ARMD) {
     HubState = true;
@@ -62,10 +65,11 @@ while(HubState == false) {
     Serial.println("System Disarmed.");
   }
 }
-
-
+*/
+delay(2000);
  
 if(SysArmed == true)   {
+    sendMessageToDevice("Cam Starting Video",CAM_RDY);
 
     CamConfig();
     Serial.println("Camera Configured");
@@ -81,8 +85,6 @@ if(SysArmed == true)   {
     FirebaseUpl();
     delay(1000);
   
-    HubConnect = false;
-    HubState = false;  
     Serial.println("Entering sleep mode");
 
     delay(1000);
@@ -91,8 +93,11 @@ if(SysArmed == true)   {
   }
 
 else    {
-    HubConnect = false;
-    HubState = false;
+    Serial.println("System Disarmed, Entering sleep mode");
+
+    delay(1000);
+
+    
     esp_deep_sleep_start();
   }
 
