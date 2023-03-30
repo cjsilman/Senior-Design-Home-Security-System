@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Captured Videos</title>
 
-    <link href='style.css' rel='stylesheet' />
+    <link href='CamStyle.css' rel='stylesheet' />
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
@@ -16,7 +16,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
-    <script src="Config.js"></script>
+    <script src="CameraConfig.js"></script>
 
 </head>
 <body style="text-align:center">
@@ -26,8 +26,11 @@
     </h1> 
 
     <br><br>
+    <div id="video">
+        <img></img>
+    </div>
+    <br><br>
 
-    <img id = "video" style='border:2px solid #000000' height="400" width"400"/>
 
     <br><br>
 
@@ -35,11 +38,14 @@
         Select Video:
     </label>
 
-    <select id="vidSel"></select>
+    <select id="vidSel">
+        <option id ="default">Select A Video To View</option>
+    </select>
+   
+    <button class = "PlayBTN" id = "PlayBTN">Play</button> 
+    <button class = "PauseBTN" id = "PauseBTN">Pause</button>
     
-   <button class = "PlayBTN">Play</button> 
-   <button class = "PauseBTN">Pause</button>
-   <script src="upload.js"></script>
+   <script src="VideoPlayer.js"></script>
    
 </body>
 </html>

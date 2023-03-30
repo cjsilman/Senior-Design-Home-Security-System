@@ -1,15 +1,15 @@
 #include "esp_camera.h"
 #include "EEPROM.h"
-#define EEPROM_SIZE 1
+#define EEPROM_SIZE 4
 
 
 void setup() {
   
   EEPROM.begin(EEPROM_SIZE);
   Serial.begin(115200);
-  unsigned int EEPROM_init = EEPROM.read(0);
+  unsigned int EEPROM_init = EEPROM.read(3);
 
-  EEPROM.write(0, 0);
+  EEPROM.write(3, 0);
   
   EEPROM.commit();
 
