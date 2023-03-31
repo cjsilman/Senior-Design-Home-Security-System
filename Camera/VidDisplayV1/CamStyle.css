@@ -24,7 +24,9 @@ div {
    visibility: visible; 
 }
 
-
+.slidecontainer {
+    display: none;
+}
 
 .hiddenImages {
     display: none;

@@ -6,23 +6,78 @@ var container = document.getElementById("video");
 var txt;
 var vidRef;
 var startUp = true;
-var pause = false;
 
-var btn1 = document.querySelector(".PlayBTN");
-var btn2 = document.querySelector(".PauseBTN");
+var frame = 0;
+var playing = false;
+var delay;
+
+
+var btn1 = document.getElementById("PlayBTN");
+var slider = document.getElementById("myRange");
 
 videoList();
 
 select.onchange = onChange;
 
-btn1.addEventListener('click' ,e=>{
-    playSelected();
-});
+slider.oninput = function() {
+    clearInterval(delay);
+    pause();
+    document.getElementById(`image${frame}`).setAttribute("class", "hiddenImages");
+    frame = parseInt(slider.value);
+    //frame = parseInt(slider.value);
+    if(frame == 0) {
+        document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
+    }
+    else {
+    
+        document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
+        document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
+    }
+    if(frame > 149) {
+        frame = 149;
+    }
 
-btn2.addEventListener('click', e=> {
-    pause = true;
-});
+}
 
+btn1.onclick = function(){
+    if(playing == false) {
+        //btn1.innerHTML = 'Pause';
+        play();
+    }
+    else {
+        clearInterval(delay);
+        //btn1.innerHTML = 'Play';
+        pause();
+    }
+}
+
+function play() {
+    btn1.innerHTML = 'Pause';
+    playing = true;
+    delay = setInterval(playSlides,68);
+}
+function pause() {
+    btn1.innerHTML = 'Play';
+    playing = false;
+    
+    
+}
+function playSlides() {
+    console.log(frame);
+    if(frame > 0) {
+        document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
+        document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
+    }
+    else {
+        document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
+    }
+    slider.value = frame;
+    frame = frame + 1;
+    if(frame > 149) {
+        document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
+        frame = 0;
+    }
+}
 
 function videoList() {
     AllVidsRef.listAll().then((result)=>{
@@ -44,7 +99,7 @@ function videoList() {
 
 function onChange() {
     
-
+    frame = 0;
     value = select.value;
      txt = select.options[select.selectedIndex].text;
      vidRef = AllVidsRef.child(txt + '/');
@@ -58,7 +113,7 @@ function onChange() {
      else {
         
         onStart();
-        //startUp = false; 
+         
      }
      
     loadImages();  
@@ -68,7 +123,7 @@ function onChange() {
 function onStart() {
     document.getElementById('default').style.display= 'none';
     document.getElementById('PlayBTN').style.visibility = 'visible';
-    document.getElementById('PauseBTN').style.visibility = 'visible';
+    document.getElementById("slidecontainer").style.display = 'flex';
     startUp = false; 
 }
 
@@ -81,8 +136,6 @@ function loadImages() {
         temp.setAttribute("id", "image" + j);
         vidRef.child("image"+ j + ".jpg").getDownloadURL().then((url)=> { 
             temp.setAttribute("src", url);
-            //onsole.log(url);
-            //console.log(temp);
             container.appendChild(temp)
             //container.innerHTML=`<img class="hiddenImgs" id = "image${i}" src = "${url}">`
        })
@@ -93,7 +146,7 @@ function loadImages() {
 }
 
     
-
+/*
 function playSelected() {
    
    var i = 0;
@@ -114,3 +167,4 @@ function playSelected() {
 
   
 }
+*/

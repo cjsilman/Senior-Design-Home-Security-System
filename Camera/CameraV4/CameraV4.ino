@@ -11,8 +11,11 @@
 #include "espnowHelper.h"
 #include <esp_now.h>
 
+//Hub bools
 bool HubConnect = true;
 bool SysArmed = true;
+
+
 
 
 
