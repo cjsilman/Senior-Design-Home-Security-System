@@ -121,6 +121,16 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     return;
   }
 
+  if (strcmp(sender.getType(), "Camera") == 0) {
+    if (strcmp(hubStatus, "DISARMED") == 0) {
+      sendMessageToDevice("System Disarmed", HUB_DISARM, 0.0f, sender.getMacAddr(), sender.getStringMacAddr());
+    }
+    else
+    {
+      sendMessageToDevice("System Armed", HUB_ARM, 0.0f, sender.getMacAddr(), sender.getStringMacAddr());
+    }
+  }
+
   strcpy(dataPath, "nodes/");
   strcat(dataPath, sender.getID());
   strcat(dataPath, "/data");
@@ -233,7 +243,7 @@ void attemptContactWithEachDevice() {
         Serial.println(it->getStringMacAddr());
         Serial.println();
       }
-      delay(1000);
+      delay(5000);
     }
   }
   delay(100);
