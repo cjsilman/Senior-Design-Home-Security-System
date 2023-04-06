@@ -15,18 +15,78 @@ header {
     padding-left: 10px;
 }
 
-div {
+#vidContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*background-color:purple ;*/
+    width: 100%;
+    height: 486px;
+    align-items: center;
+    
+}
+
+#video {
     display: flex;
     justify-content: center;
+    width: 640px;
+    height: 480px;
+    
+    
 }
+
+
 
 .default {
    visibility: visible; 
 }
 
-.slidecontainer {
+#slidecontainer {
     display: none;
+    width: 100%;
+    border: 3px black;
+    justify-content: center;
 }
+
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 640px; /* Full-width */
+    height: 15px; /* Specified height */
+    background: #a3a1a1; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    position: relative;
+    bottom: 21px;
+    
+}
+
+.slider:hover {
+    opacity: 0.6; /* Fully shown on mouse-over */
+    
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 17px; /* Set a specific slider handle width */
+    height: 17px; /* Slider handle height */
+    border-radius: 100%;
+    opacity: 1;
+    background: #3d0670; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+  .slider::-moz-range-thumb {
+    width: 15px; /* Set a specific slider handle width */
+    height: 15px; /* Slider handle height */
+    background: #350555; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+
 
 .hiddenImages {
     display: none;
@@ -40,12 +100,29 @@ div {
     height: 400;
     width: 400;
     align-content: center;
+    border: 3px solid black;
 }
 
 
 .PlayBTN {
     visibility: hidden;
 }
-.PauseBTN {
+
+.DeleteVid {
     visibility: hidden;
 }
+/*
+img {
+    display: flex;
+    width: 400;
+    height: 400;
+    align-content: center;
+    border: 3px solid black;
+
+}
+
+.video {
+    background-color: orange;
+    
+}
+*/

@@ -13,16 +13,34 @@ var delay;
 
 
 var btn1 = document.getElementById("PlayBTN");
+var btn2 = document.getElementById("DeleteVid");
 var slider = document.getElementById("myRange");
+var current;
 
+slider.value = 0;
 videoList();
+
+var startImage = document.getElementById("init");
+loadingRef.getDownloadURL().then((link)=> {
+  startImage.setAttribute("src",link);
+  startImage.setAttribute("class","displayImages");
+
+})
+
 
 select.onchange = onChange;
 
-slider.oninput = function() {
+slider.onchange = function() {
+   clearInterval(delay);
+   pause();
+   
+   
+
+}
+slider.oninput = function() {;
     clearInterval(delay);
     pause();
-    document.getElementById(`image${frame}`).setAttribute("class", "hiddenImages");
+    document.getElementById(`image${frame}`).setAttribute("class", "hiddenImages");   
     frame = parseInt(slider.value);
     //frame = parseInt(slider.value);
     if(frame == 0) {
@@ -32,6 +50,7 @@ slider.oninput = function() {
     
         document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
         document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
+        document.getElementById(`image${frame+1}`).setAttribute("class", "hiddenImages");
     }
     if(frame > 149) {
         frame = 149;
@@ -51,18 +70,36 @@ btn1.onclick = function(){
     }
 }
 
+btn2.onclick = function() {
+    var result = confirm("Delete Video?");
+    if(result) {
+        for(let z =0; z < 150; z++) {
+        vidRef.child("image" + z + ".jpg").delete().then(() => {
+            console.log("image " + z + " deleted");
+        }).catch((error) => {
+
+        })
+    }
+    }
+    select.innerHTML = "";
+    setTimeout(()=>{videoList();},1000);
+}
+
 function play() {
-    btn1.innerHTML = 'Pause';
+    document.getElementById('image0').setAttribute("class","hiddenImages");
+    btn1.innerHTML = `<span id = "pausePlayIcon" class="fa fa-pause">`;
     playing = true;
     delay = setInterval(playSlides,68);
 }
 function pause() {
-    btn1.innerHTML = 'Play';
+    btn1.innerHTML = `<span id = "pausePlayIcon" class="fa fa-play">`;
+    
     playing = false;
     
     
 }
 function playSlides() {
+    slider.value = frame;
     console.log(frame);
     if(frame > 0) {
         document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
@@ -71,8 +108,10 @@ function playSlides() {
     else {
         document.getElementById(`image${frame}`).setAttribute("class", "displayImages");
     }
-    slider.value = frame;
+    
+    
     frame = frame + 1;
+    
     if(frame > 149) {
         document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
         frame = 0;
@@ -121,8 +160,10 @@ function onChange() {
 
 
 function onStart() {
+    document.getElementById('init').setAttribute("class", "hiddenImages");
     document.getElementById('default').style.display= 'none';
     document.getElementById('PlayBTN').style.visibility = 'visible';
+    document.getElementById('DeleteVid').style.visibility = 'visible';
     document.getElementById("slidecontainer").style.display = 'flex';
     startUp = false; 
 }
@@ -132,7 +173,12 @@ function loadImages() {
     setInterval(()=>{if( j < 150) {
         
         var temp = document.createElement("img");
+        if(j==0) {
+            temp.setAttribute("class","displayImages")
+        }
+        else {
         temp.setAttribute("class", "hiddenImages");
+        }
         temp.setAttribute("id", "image" + j);
         vidRef.child("image"+ j + ".jpg").getDownloadURL().then((url)=> { 
             temp.setAttribute("src", url);
@@ -143,28 +189,17 @@ function loadImages() {
       
       
    }},5);
+   
 }
 
     
-/*
-function playSelected() {
-   
-   var i = 0;
-   setInterval(()=> {if(i < 150) {
-        if(i > 0) {
-            //let j = i - 1;
-            let previous = document.getElementById(`image${i-1}`);
-            previous.setAttribute("class", "hiddenImages");
-        }
-        let current = document.getElementById(`image${i}`);
-        current.setAttribute("class", "displayImages");
-        i++;
-
-    };},67);
-   
-
-   
-
-  
+function pausePlay() {
+    if(playing==true) {
+        clearInterval(delay);
+        //btn1.innerHTML = 'Play';
+        pause();
+    }
+    else {
+        play();
+    }
 }
-*/
