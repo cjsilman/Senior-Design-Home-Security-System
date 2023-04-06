@@ -10,6 +10,8 @@ class Node {
       char stringMacAddr[22] = {};
       char type[32] = {};
       int status;
+      float lowTemp;
+      float highTemp;
 
       uint8_t charTo8bitHex(char character, char character2);
 
@@ -28,6 +30,8 @@ class Node {
 
       void setStatus(int status);
 
+      void setTemp(float LTemp, float HTemp);
+
       char * getID();
 
       char * getName();
@@ -41,5 +45,9 @@ class Node {
       int getStatus();
 
       void printMacAddr();
+
+      float getLowTemp();
+
+      float getHighTemp();
 };
 #endif

@@ -131,6 +131,12 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     }
   }
 
+  if (strcmp(sender.getType(), "Temperature Sensor") == 0) {
+    if(incomingReadings.data < sender.getLowTemp() || incomingReadings.data > sender.getHighTemp()) {
+      incomingReadings.state = 2;
+    }
+  }
+
   strcpy(dataPath, "nodes/");
   strcat(dataPath, sender.getID());
   strcat(dataPath, "/data");
@@ -243,7 +249,11 @@ void attemptContactWithEachDevice() {
         Serial.println(it->getStringMacAddr());
         Serial.println();
       }
-      delay(5000);
+      int startTime = millis();
+      while((millis() - startTime)/1000 < 5){
+        //Waits 5 seconds incase they respond. Reduces overlap.
+      }
+      Serial.println();
     }
   }
   delay(100);
