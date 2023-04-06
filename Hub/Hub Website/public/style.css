@@ -1,0 +1,577 @@
+@import url("https://fonts.googleapis.com/css?family=Outfit:600");
+
+body, html {
+    font-family: "Outfit";
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+
+.title-header {
+    background-color: #333;
+    width: 70vw;
+    height: 50px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+}
+
+.header {
+    background-color: #333;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+    display: flex;
+}
+
+.user-header {
+    color: white;
+    background-color: #333;
+    margin-right: 15px;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: flex-end;  
+    justify-content: space-around;
+    text-align: right;
+}
+.user-header a {
+    text-decoration: none;
+}
+
+#userlink {
+    font-size: 22px;
+    cursor: default;
+    color: white;
+}
+
+#signoutlink {
+    color: white;
+    font-size: 14px;
+}
+
+
+.container {
+    display: flex;
+    background-color: #f9f9f9;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+/* Content holds main and sidebar */
+.content {
+    background-color: #f9f9f9;
+    width: 100vw;
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100vh;
+}
+
+.sidebar, .main {
+    margin: 10px 0px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.sidebar {
+    flex: 1;
+    padding: 0px;
+    margin: 0;
+    background-color: #333;
+    min-height: 100%;
+}
+
+.button {
+    background-color: #333;
+    padding: 20px;
+    margin: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: center;
+    min-width: 100px;
+}
+
+#armPageLink {
+    font-size: 20px;
+}
+
+.button a {
+    text-decoration: none;
+    color: white;
+}
+
+.button_slide {
+    box-shadow: inset 0 0 0 0 #4CAF50;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.slide_right:hover {
+    box-shadow: inset 400px 0 0 0 #4CAF50;
+}
+
+/* Main holds main-header, devices, and device form */
+.main {
+    background-color: #f9f9f9;
+    margin: 0;
+    padding-left: 0px;
+    flex: 4;
+}
+
+
+
+
+.main-header {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Nodes holds each node */
+.nodes {
+    background-color: #f9f9f9;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: flex-start;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.node {
+    background-color: #f9f9f9;
+    color: #444;
+    border-radius: 30px;
+    width: 175px;
+    height: 175px;
+    margin: 10px;
+    padding: 10px;
+    border-style: solid;
+}
+
+.node h3 {
+    margin: 0px;
+}
+
+.node p {
+    margin: 0px;
+}
+
+.node_mac {
+    padding-top: 15px;
+    color: #667;
+    font-size: 10px;
+}
+
+.node_type {
+    color: #667;
+    font-size: 10px;
+}
+
+.node_data {
+    padding: 10px;
+}
+
+.node-temp-range {
+    margin:0px; 
+    padding:0px; 
+    color:#667; 
+    font-size:12px;
+
+}
+
+.remove-device-button {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    border-style: none;
+    background-color: #f9f9f9;
+}
+
+.remove-device-button:hover {
+    color: red;
+}
+
+
+/* Device form holds the form */
+  .device-form {
+    display: none;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    background-color: #f9f9f9;
+    color: #444;
+}
+
+.form-flex {
+    background-color: #f9f9f9;
+    width: 175px;
+    height: 175px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 30px;
+    border-style: solid;
+}
+
+.form-flex li input {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 20px;
+}
+
+#add-device-button {
+    font-size: 48px;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    border-style: none;
+    background-color: #f9f9f9;
+}
+
+#add-device-button:hover {
+    color: grey;
+}
+
+/* Arm/Disarm */
+#arm_disarm {
+    font-size: 16px;
+}
+
+/* Hub Info */
+.main2 {
+    background-color: #f9f9f9;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.account {
+    color: #333;
+}
+
+/* User Settings */
+.main3 {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+.user-settings-table {
+    width: 50%;
+    text-align: left;
+}
+.user-settings-table tr th {
+    padding-right: 20px;
+}
+
+.user-settings-header {
+    padding-bottom: 10px;
+}
+
+.user-settings-table tr td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-settings-table button {
+    font-size: 16px;
+    margin-top: 10px;
+    border-style: none;
+    background-color: transparent;
+    padding-bottom: 10px;
+}
+
+.user-settings-table button:hover {
+    color: red;
+}
+
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+
+  }
+
+.active {
+    background-color: #55bd59;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.main4 {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-left: 10px;
+    flex: 4;
+    display: none;
+}
+
+#log-date-header {
+    padding: 0px;
+    margin: 0px;
+}
+
+.log-table {
+    border-style: solid;
+    overflow-y:scroll;
+    height:500px; 
+    display:block;
+}
+
+.log-table tr td {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.log-new-notif {
+    color: rgb(236, 61, 61);/*rgb(247, 189, 83) */
+    
+}
+
+#log-download {
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+#log-download-options {
+    height: 40px;
+    padding-top: 20px;
+}
+
+#log-download-button {
+    text-decoration: none;
+    color: #333;
+    padding: 4px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    background-color: #f9f9f9
+}
+
+#log-download-button:hover {
+    background-color: #55bd59;
+}
+
+#log-view-button {
+    text-decoration: none;
+    color: #333;
+    padding: 4px;
+    border-radius: 10px;
+    border-style: solid;
+    background-color: #f9f9f9
+}
+
+#log-view-button:hover {
+    background-color: #55bd59;
+}
+
+#logPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.log-clear {
+    text-decoration: none;
+    color: #333;
+}
+
+.log-clear:hover {
+    color: red;
+}
+
+.log-link-active {
+    background-color: red;
+    border-radius: 20px;
+    width: 75%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 990px) {
+    .log-link-active {
+        width: 80%;
+        height: 45px;
+    }
+
+    #log-text {
+        font-size: 14px;
+    }
+}
+
+/* Adjust for mobile devices */
+@media (max-width: 600px) {
+    .header {
+        background-color: aqua;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title-header {
+        width: 98%;
+        display: flex;
+        background-color: #333;
+        justify-content: center;  
+    }
+
+    .user-header {
+        color: white;
+        margin-right: 15px;
+        width: 100%;
+        min-height: 50px;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        align-items: center;  
+        background-color: #333;
+    }
+
+    .user-header a {
+        text-decoration: none;
+        height: 50px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        background-color: yellow;
+        width: 100%;
+    }
+
+    .content {
+        flex-direction: column-reverse;
+        background-color: aqua;
+        height: 1500px;
+        width: 100%;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-flow: row wrap;
+        align-content: flex-start;
+        justify-content: center;
+        background-color: #333;
+        width: 100%;
+        min-height: 0px;
+        background-color: #333;
+        flex: .5;
+    }
+
+    #armPage {
+        width: 100%;
+    }
+
+    .button {
+        padding-left: 5px;
+        padding-right: 5px;
+        min-width: 0px;
+        height: 10px;
+        background-color: #333;
+    }
+
+    .log-link-active {
+        width: 75%;
+        height: 30px;
+    }
+
+    #logPage {
+        width: 100%;
+    }
+    
+    .button_slide {
+        box-shadow: inset 0 0 0 0 #333;
+        -webkit-transition: ease-out 0.4s;
+        -moz-transition: ease-out 0.4s;
+        transition: ease-out 0.4s;
+    }
+    
+    .slide_right:hover {
+        box-shadow: inset 400px 0 0 0 #333;
+    }
+    .user-settings-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .user-settings-table tr td {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        word-wrap: break-word;
+    }
+
+    .node {
+        width: 300px;
+        height: 200px;
+    }
+
+    /* Name */
+    .node h3 {
+        margin: 0px;
+        font-size: 24px;
+    }
+
+    .node_mac {
+        padding-top: 15px;
+        color: #667;
+        font-size: 16px;
+    }
+    
+    .node_type {
+        color: #667;
+        font-size: 16px;
+    }
+    
+    .node_data {
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    .node-temp-range {
+        font-size: 16px;
+    }
+
+    .form-flex {
+        width: 300px;
+        height: 200px;
+    }
+
+    /* Notif Log */
+    .log-table {
+        width: 340px;
+    }
+
+    .log-table tr td {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        font-size: 14px;
+    }
+
+  }

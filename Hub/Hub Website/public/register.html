@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Security System</title>
+
+    <link href='style.css' rel='stylesheet' />
+    <link href='auth.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script src="firebaseConfig.js"></script>
+
+</head>
+ <body>
+    <div>
+        <h3 class="mb-3">User Creation</h3>
+        <input type="text" placeholder="Fullname" id="nameInp" class="form-control mb-3">
+        <input type="text" placeholder="Email" id="emailInp" class="form-control mb-3">
+        <input type="text" placeholder="Username" id="userInp" class="form-control mb-3">
+        <input type="password" placeholder="Password" id="passInp" class="form-control mb-3">
+        <label for="type">Please select a role: </label>
+        <select id="typeInp" name="type">
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+        </select> 
+        <button type="text" id="sub_btn" class="btn btn-outline-primary mb-3 w-100" style="margin-top:10px;">Create User</button>
+        <a href="index.html" class="badge badge-secondary py-1 w-100">Return to Security System</a>
+    </div>
+    <script src="register.js"></script>
+</body>
+
+</html>
