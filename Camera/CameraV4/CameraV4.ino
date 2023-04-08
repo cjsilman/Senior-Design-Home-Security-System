@@ -12,9 +12,9 @@
 #include <esp_now.h>
 
 //Hub bools
-bool HubConnect = true;
-bool SysArmed = false;
-bool HubState = false;
+bool HubConnect = false;
+extern bool SysArmed;
+extern bool HubState;
 
 
 
@@ -40,18 +40,14 @@ while(HubConnect == false) {
     espnowSetup();
     unsigned long timer = millis();
     if(sendMessageToDevice("This is the Camera!",CAM_OK)){
+      Serial.println("Getting Status");
       while(HubState == false) { //Debug from here
-         if(onDataRecv(HUB_ARM)){
-           HubState = true;
-           SysArmed = true;
-         }
-         else if(onDataRecv(HUB_DISARM)) {
-           HubState = true;
-           SysArmed = false;
-         }
+         Serial.print(".");
+         delay(1000);
+         
       }
-      //to here
-
+      HubConnect = true;
+      
     }
     else {
       Serial.println("Message Send Fail, Sending Again.");

@@ -18,5 +18,5 @@ const firebaseConfig = {
   //Storage References
   var storageRef = stor.ref();
   var AllVidsRef = storageRef.child('videos/');
-  var loadingRef = storageRef.child('loading/StartUpImage.png');
+  var loadingRef = storageRef.child('loading/StartUpImage.jpg');
   

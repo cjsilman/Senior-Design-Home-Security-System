@@ -27,30 +27,48 @@
     </h1> 
 
     <br><br>
+<div id = main>
+
     <div id="vidContainer">
-    <div id="video" onclick="pausePlay()">
-        <img id = "init" src=></img>
-    </div>
-    <div class="slidecontainer" id="slidecontainer" >
-        <input type="range" min="0" max="149" class="slider" id="myRange">
-    </div>
-    </div>
-    <br><br>
 
+        <div id="video" onclick="pausePlay()">
+            
+        </div>
+        
+        <div id = "onVid-Controls">
 
-    <br><br>
+            <button id = "PlayBTN"><span id = "pausePlayIcon" class="fa fa-play"></span></button>
 
-    <label for="vidSel" style = "color: black">
-        Select Video:
-    </label>
+            <div id="slidecontainer">
+                <input type="range" min="0" max="149" class="slider" id="myRange"></div>
+            </div>
 
-    <select id="vidSel">
-        <option id ="default">Select A Video To View</option>
-    </select>
-   
-    <button class = "PlayBTN" id = "PlayBTN"><span id = "pausePlayIcon" class="fa fa-play"></span></button> 
+        </div>
+
+        <div id = "timeLabel"></div>
+
+        <div id="belowVid-Controls">
+
+            <select id="vidSel">
+                <option id ="default">Select A Video To View</option>
+            </select>
+
+            <button id = "DeleteVid">
+                Delete Video
+            </button>
     
-    <button class = "DeleteVid" id = "DeleteVid">Delete Video</button>
+            <button id = "getFrame">
+                Download Current Frame
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <br><br>
+
     
    <script src="VideoPlayer.js"></script>
    
