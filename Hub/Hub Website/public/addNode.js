@@ -14,6 +14,8 @@ const deviceNameInput = document.querySelector("#device-name");
 const deviceMacInput = document.querySelector("#mac-addr");
 const deviceSelectorInput = document.querySelector("#type-selector");
 const deviceFormTempInput = document.querySelector("#device-form-temp-input");
+const deviceLowTempInput = document.querySelector("#lower-temp");
+const deviceHighTempInput = document.querySelector("#higher-temp")
 
 //Nodes List
 var totalNodes = 0;
@@ -35,16 +37,11 @@ addDeviceButton.addEventListener("click", ()=> {
 // If temp sensor is selected, add in the temp range input
 function updateDeviceForm() {
     if(deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text == "Temperature Sensor") {
-        deviceFormTempInput.innerHTML = `
-        <label style="font-size: 14px;" for="lower-temp"></label>
-        <span style="font-size: 14px;">Safe&degF:</span>
-        <input id="lower-temp" style="width: 36px; height: 15px;" placeholder="0" type="number">
-        <span style="font-size: 14px;">-</span>
-        <input style="width: 36px; height: 15px;" placeholder="30" type="number">`;
+        deviceFormTempInput.style.display = "inline";
     }
     else
     {
-        deviceFormTempInput.innerHTML = "";
+        deviceFormTempInput.style.display = "none";
     }
 }
 
@@ -54,18 +51,29 @@ deviceForm.addEventListener('submit', (e)=>{
     e.stopPropagation();
     const deviceName = deviceNameInput.value;
     const deviceMac = deviceMacInput.value;
+    let deviceLowTemp = deviceLowTempInput.value;
+    let deviceHighTemp = deviceHighTempInput.value;
     var deviceType = deviceSelectorInput.options[deviceSelectorInput.selectedIndex].text;
     
+    if(deviceType != "Temperature Sensor") {
+        deviceLowTemp = 0.0;
+        deviceHighTemp = 30.0;
+    }   
+
     nodesRef.push({
         name: deviceName,
         macAddr: deviceMac,
         type: deviceType,
         status: -1,
-        data: -1
+        data: -1,
+        lowTemp: parseFloat(deviceLowTemp),
+        highTemp: parseFloat(deviceHighTemp)
     });
 
     deviceNameInput.value = "";
     deviceMacInput.value = "";
+    deviceLowTemp.value = "";
+    deviceHighTemp.value = "";
     deviceForm.style.display = "none";
     nodeCreator.style.display='block';
 });
@@ -87,6 +95,11 @@ function nodeHtmlFromObject(node) {
     deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button></div>`;
     if (node.type == "Temperature Sensor") {
         deviceBox.innerHTML += `<p class = "node_data">&#127777 Temp: <span  id = "${node.macAddr}-data">__</span></p>`;
+        deviceBox.innerHTML += `
+        <div>
+            <p class = "node-temp-range">Range: ${node.lowTemp} - ${node.highTemp}&degF</p>
+        </div>
+        `;
     }
     if (node.type == "Camera") {
         deviceBox.innerHTML += `<p class = "node_data">Status: <span  id = "${node.macAddr}-data">No detect</span></p>`;

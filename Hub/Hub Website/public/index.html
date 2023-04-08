@@ -15,6 +15,8 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
     
     <script src="firebaseConfig.js"></script>
 </head>
@@ -63,14 +65,19 @@
                                 </li>
                                 <li>
                                     <label for="type">Type:</label>
-                                    <select id="type-selector" name="type" onchange="updateDeviceForm()">
+                                    <select id="type-selector" name="type" onchange="updateDeviceForm()" oninput="updateDeviceForm()">
                                         <option value="Camera">Camera</option>
                                         <option value="Glassbreak Sensor">Glassbreak Sensor</option>
                                         <option value="Temperature Sensor">Temperature Sensor</option>
                                         <option value="Door Sensor">Door Sensor</option>
                                     </select> 
                                 </li>
-                                <li id = "device-form-temp-input">
+                                <li id = "device-form-temp-input" style="display:none;">
+                                    <label style="font-size: 14px;" for="lower-temp"></label>
+                                    <span style="font-size: 14px;">Safe&degF:</span>
+                                    <input id="lower-temp" style="width: 36px; height: 15px;" placeholder="0" type="number">
+                                    <span style="font-size: 14px;">-</span>
+                                    <input id="higher-temp" style="width: 36px; height: 15px;" placeholder="30" type="number">
                                 </li>
                                 <li>
                                     <button type="submit" value="add">Add Device</button>

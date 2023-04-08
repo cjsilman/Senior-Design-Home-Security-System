@@ -27,6 +27,11 @@ void Node::setStatus(int input) {
     status = input;
 } 
 
+void Node::setTemp(float LTemp, float HTemp) {
+  lowTemp = LTemp;
+  highTemp = HTemp;
+}
+
 char * Node::getID() {
     return ID;
 }
@@ -58,6 +63,14 @@ char * Node::getType() {
 
 int Node::getStatus() {
     return status;
+}
+
+float Node::getLowTemp() {
+  return lowTemp;
+}
+
+float Node::getHighTemp() {
+  return highTemp;
 }
 
 void Node::setMacAddr(String input) {
