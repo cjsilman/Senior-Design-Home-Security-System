@@ -23,6 +23,9 @@
 #include <addons/TokenHelper.h>
 #include <addons/SDHelper.h>
 
+//time 
+#include "time.h"
+
 //-------------------------------------------------------
 //Define Usage of 1 Byte of EEPROM Space
 
@@ -35,6 +38,11 @@
 const char* ssid = "JD2.4";
 const char* password ="Hal9cour9!";
 
+//-------------------------------------------------------
+//time variables
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = -18000;
+const int daylightOffset_sec = 0;
 
 //-------------------------------------------------------
 //Pin Definitions For Cam
@@ -235,6 +243,23 @@ if(ProgCount > 1) {
 
 void FirebaseUpl() {
   if(ProgCount > 1) {
+
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+    return;
+  }
+  char timeMonth[10];
+  strftime(timeMonth,10,"%B",&timeinfo);
+  char timeWeekDay[3];
+  strftime(timeWeekDay,3, "%d", &timeinfo);
+  char timeHour[3];
+  strftime(timeHour,3, "%I", &timeinfo);
+  char timeMin[3];
+  strftime(timeMin,3,"%M",&timeinfo);
+  String date = String(timeMonth) + "_" + String(timeWeekDay) + "_" + String(timeHour) + String(timeMin);
+
   configF.api_key = API_KEY;
 
   auth.user.email = USER_EMAIL;
@@ -249,7 +274,7 @@ void FirebaseUpl() {
   unsigned int savedPhotos = 0;
   while(savedPhotos < picNum) {  //replace 1 w picNum
     String path = "/image" + String(savedPhotos) + ".jpg";
-    String path2 = "/videos/" + String(ProgCount) + path;
+    String path2 = "/videos/" + date + path;
     //Upoad Image to Firebase
     if(Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID, path , mem_storage_type_sd , path2, "image/jpeg")){
       Serial.print("Photo Number ");

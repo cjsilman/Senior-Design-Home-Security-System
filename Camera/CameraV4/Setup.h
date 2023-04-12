@@ -14,6 +14,9 @@
 //EEPROM Lib
 #include "EEPROM.h"
 
+//time 
+#include "time.h"
+
 void disableBluetooth();
 void CamConfig();
 void SDInit();

@@ -9,10 +9,12 @@
 #include "addons/RTDBHelper.h"
 
 // Firebase project API Key
-#define API_KEY "AIzaSyAsZSHG1-VpOdG63fJtrgE_7OovbOgBmkQ"
+#define API_KEY "AIzaSyC5ntQi0lBvcJ7-narsm0VrKc5erbTZjwY"
+//"AIzaSyAsZSHG1-VpOdG63fJtrgE_7OovbOgBmkQ"
 
 // RTDB URLefine the RTDB URL */
-#define DATABASE_URL "https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/" 
+#define DATABASE_URL "https://home-security-system-4c4fa-default-rtdb.firebaseio.com/"
+//"https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/" 
 
 //Define Firebase Data object
 FirebaseData fbdo;

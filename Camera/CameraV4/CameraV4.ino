@@ -11,8 +11,11 @@
 #include "espnowHelper.h"
 #include <esp_now.h>
 
-bool HubConnect = true;
-bool SysArmed = true;
+//Hub bools
+bool HubConnect = false;
+extern bool SysArmed;
+extern bool HubState;
+
 
 
 
@@ -37,13 +40,19 @@ while(HubConnect == false) {
     espnowSetup();
     unsigned long timer = millis();
     if(sendMessageToDevice("This is the Camera!",CAM_OK)){
+      Serial.println("Getting Status");
+      while(HubState == false) { //Debug from here
+         Serial.print(".");
+         delay(1000);
+         
+      }
       HubConnect = true;
-
+      
     }
     else {
       Serial.println("Message Send Fail, Sending Again.");
     }
-    if(timer > 15000) {
+    if(timer > 20000) {
       Serial.println("-----Failed to Connect-----");
       Serial.print("Going to Sleep");
       delay(1000);
@@ -52,21 +61,12 @@ while(HubConnect == false) {
     
   }
 
-/*
-while(HubState == false) {
-  if(incoming.state == HUB_ARMD) {
-    HubState = true;
-    SysArmed = true;
-    Serial.println("System Armed.");
-  }
-  else if(incoming.state == HUB_DSARMD) {
-    HubState = true;
-    SysArmed = false;
-    Serial.println("System Disarmed.");
-  }
-}
-*/
+
+
 delay(2000);
+
+//Wake if gpio pin goes high
+esp_sleep_enable_ext0_wakeup(GPIO_NUM_12, 1);
  
 if(SysArmed == true)   {
     //sendMessageToDevice("Cam Starting Video",CAM_RDY);
@@ -95,7 +95,7 @@ if(SysArmed == true)   {
 else    {
     Serial.println("System Disarmed, Entering sleep mode");
 
-    delay(1000);
+    delay(2000);
 
     
     esp_deep_sleep_start();
@@ -103,8 +103,7 @@ else    {
 
 
 
-//Wake if gpio pin goes high
-esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+
 
   
 }

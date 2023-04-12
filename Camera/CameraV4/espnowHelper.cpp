@@ -2,6 +2,9 @@
 
 bool messageReceived = false;
 
+bool SysArmed = false;
+bool HubState = false;
+
 esp_now_peer_info_t peerInfo;
 
 uint8_t hubAddr[6] = {0x44, 0x17, 0x93, 0x5F, 0xB7, 0xB0};
@@ -155,24 +158,14 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     Serial.print(incoming.stringMacAddr); Serial.print(" = "); Serial.println(WiFi.macAddress().c_str());
   }
 
-  Serial.print("Bytes received: ");
-  Serial.println(len);
-  Serial.print("Message for macAddr: ");
-  for(int i = 0; i < 6; ++i)
-  {
-    Serial.print(incoming.macAddr[i]);
-    Serial.print(" ");
+  if(incoming.state == HUB_ARM) {
+    SysArmed = true;
+    HubState = true;
   }
-  Serial.println();
-  Serial.print("msg: ");
-  Serial.println(incoming.msg);
-  Serial.print("data: ");
-  Serial.println(incoming.data);
-  Serial.print("State: ");
-  Serial.println(incoming.state);
-  Serial.print("String Mac: ");
-  Serial.println(incoming.stringMacAddr);
-  Serial.println();
+  else if(incoming.state == HUB_DISARM) {
+    SysArmed = false;
+    HubState = true;
+  }
 
   messageReceived = true;
 }

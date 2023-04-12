@@ -178,6 +178,14 @@ body, html {
     padding: 10px;
 }
 
+.node-temp-range {
+    margin:0px; 
+    padding:0px; 
+    color:#667; 
+    font-size:12px;
+
+}
+
 .remove-device-button {
     margin: 0px;
     padding: 0px;
@@ -542,6 +550,10 @@ ul {
     .node_data {
         padding: 10px;
         font-size: 20px;
+    }
+
+    .node-temp-range {
+        font-size: 16px;
     }
 
     .form-flex {

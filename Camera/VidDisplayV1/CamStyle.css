@@ -1,5 +1,6 @@
 body, html {
     font-family: "Outfit";
+    font-size: 18px;
     padding: 0;
     margin: 0;
     color: white;
@@ -15,35 +16,192 @@ header {
     padding-left: 10px;
 }
 
-div {
+#main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: device-width;
 }
 
-.default {
+#vidContainer {
+    background-color: white;
+    width: 640px;
+    height:480px;
+}
+
+
+#video {
+    display: flex;
+    background-color: white;
+    width: 640px;
+    height: 480px;    
+}
+
+#video img {
+    max-width: 640px;
+    max-height: 480px;
+    align-content: center;
+}
+
+#onVid-Controls {
+    display: flex;
+    flex-direction: flex-start;
+    background-color: transparent;
+    position: relative;
+    bottom: 25px;
+    background-color: grey;
+    opacity: 0.3;
+    visibility: hidden;
+    width: 632px;
+    left: 2px;
+}
+
+#onVid-Controls:hover {
+    opacity: 0.7;
+    background-color: #333;
+    
+}
+
+#PlayBTN {
+  background-color: transparent;
+  border: none;
+  position: relative;
+  top: 1px;
+  font-size: 16px;
+  left: 1px;
+}
+
+
+  
+.fa-play:hover {
+    color: green;
+}
+
+.fa-pause:hover {
+    color: rgb(126, 19, 19);
+}
+
+#slidecontainer {
+    width: 100%;
+    position: relative;
+}
+
+.slider {
+    width: 98.5%;
+    -webkit-appearance: button;  /* Override default CSS styles */
+    appearance: none;
+    height: 10px; /* Specified height */
+    background: black; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;    
+}
+
+.slider:hover {
+    opacity: 0.6; /* Fully shown on mouse-over */
+    
+  }
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 10px;
+    background: green; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+.slider::-moz-range-thumb {
+    width: 15px; /* Set a specific slider handle width */
+    height: 15px; /* Slider handle height */
+    background: #04AA6D; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+#timeLabel {
+    color: rgb(126, 19, 19);
+    opacity: 1;
+    position: relative;
+    bottom: 470px;
+    left: 295px;
+}  
+
+#default {
    visibility: visible; 
 }
 
 
 
+
+#belowVid-Controls {
+    width: 640px;
+    display: flex;
+    flex-direction: flex-start;
+    position: relative;
+    background-color: none;   
+    left: 60px; 
+    top: 10px;
+}
+
+#vidSel {
+    
+    font-size: 16px;
+    background-color: lightgrey;
+    transition-duration: 0.2s;
+    border-color: grey;
+    opacity: 0.8;
+}
+
+#vidSel:hover {
+    opacity: 1;
+    font-size: 16px;
+    background-color: lightgrey;
+    transition-duration: 0.2s;
+    border-color: grey;
+    
+}
+
+#DeleteVid {
+    font-size: 16px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: grey;
+    background-color: lightgrey;
+    visibility: hidden;
+    opacity: 0.8;   
+}
+
+#DeleteVid:hover {
+    opacity: 1;
+    color: rgb(126, 19, 19);
+}
+
+
+#getFrame{
+    font-size: 16px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: grey;
+    background-color: lightgrey;
+    visibility: hidden;
+    opacity: 0.8;
+    
+}
+
+#getFrame:hover  {
+    opacity: 1;
+    color: black;
+}
+
 .hiddenImages {
     display: none;
-    height: 400;
-    width: 400;
-
 
 }
 .displayImages {
-    display: flex;
-    height: 400;
-    width: 400;
+    display: inline;
     align-content: center;
-}
-
-
-.PlayBTN {
-    visibility: hidden;
-}
-.PauseBTN {
-    visibility: hidden;
+    border: 3px solid black;
 }

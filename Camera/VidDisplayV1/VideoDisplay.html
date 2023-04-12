@@ -7,6 +7,7 @@
     <title>Captured Videos</title>
 
     <link href='CamStyle.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
@@ -26,24 +27,48 @@
     </h1> 
 
     <br><br>
-    <div id="video">
-        <img></img>
+<div id = main>
+
+    <div id="vidContainer">
+
+        <div id="video" onclick="pausePlay()">
+            
+        </div>
+        
+        <div id = "onVid-Controls">
+
+            <button id = "PlayBTN"><span id = "pausePlayIcon" class="fa fa-play"></span></button>
+
+            <div id="slidecontainer">
+                <input type="range" min="0" max="149" class="slider" id="myRange"></div>
+            </div>
+
+        </div>
+
+        <div id = "timeLabel"></div>
+
+        <div id="belowVid-Controls">
+
+            <select id="vidSel">
+                <option id ="default">Select A Video To View</option>
+            </select>
+
+            <button id = "DeleteVid">
+                Delete Video
+            </button>
+    
+            <button id = "getFrame">
+                Download Current Frame
+            </button>
+
+        </div>
+
     </div>
+
+</div>
+
     <br><br>
 
-
-    <br><br>
-
-    <label for="vidSel" style = "color: black">
-        Select Video:
-    </label>
-
-    <select id="vidSel">
-        <option id ="default">Select A Video To View</option>
-    </select>
-   
-    <button class = "PlayBTN" id = "PlayBTN">Play</button> 
-    <button class = "PauseBTN" id = "PauseBTN">Pause</button>
     
    <script src="VideoPlayer.js"></script>
    
