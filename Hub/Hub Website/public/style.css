@@ -186,6 +186,11 @@ body, html {
 
 }
 
+.node-del {
+    display: flex;
+    justify-content: center;
+}
+
 .remove-device-button {
     margin: 0px;
     padding: 0px;
@@ -392,6 +397,10 @@ ul {
     justify-content: center;
 }
 
+.log-table {
+    width: 85%;
+}
+
 .log-clear {
     text-decoration: none;
     color: #333;
@@ -409,6 +418,18 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.main5 {
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 40px;
+    flex: 4;
+    display: none;
+    flex-direction: column;
+    align-items: center;
 }
 
 @media (max-width: 990px) {

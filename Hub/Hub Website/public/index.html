@@ -7,7 +7,8 @@
     <title>Home Security System</title>
 
     <link href='style.css' rel='stylesheet' />
-    
+    <link href='CamStyle.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -149,6 +150,49 @@
                 </div>
             </div>
 
+            <!-- Video Player -->
+            <div class="main5">
+                <h2>Captured Videos</h2>
+                <p>Shown below are all the video files your cameras have uploaded from detections</p>
+                <div id="vidContainer">
+                    <div id="video-player">
+                        <div id="video" onclick="pausePlay()">
+                        
+                        </div>
+                        
+                        <div id = "onVid-Controls">
+                
+                            <button id = "PlayBTN"><span id = "pausePlayIcon" class="fa fa-play"></span></button>
+                
+                            <div id="slidecontainer">
+                                <input type="range" min="0" max="149" class="slider" id="myRange">
+                            </div>
+                
+                        </div>
+                    </div>
+            
+                    <div id = "timeLabel"></div>
+            
+                    <div id="belowVid-Controls">
+            
+                        <select id="vidSel">
+                            <option id ="default">Select A Video To View</option>
+                        </select>
+            
+                        <button id = "DeleteVid">
+                            Delete Video
+                        </button>
+                
+                        <button id = "getFrame">
+                            Download Current Frame
+                        </button>
+            
+                    </div>
+            
+                </div>
+            
+            </div>
+
             <script src="mainContentManager.js"></script>
             <div class='sidebar'>
                     <div id = "armPage" class = 'button button1 button_slide slide_right dropdown-content'>
@@ -166,6 +210,9 @@
                     <div onclick="logPageFunction()" style="cursor: pointer" id = "logPage" class = 'button button5 button_slide slide_right dropdown-content'>
                         <div id="log-link"><a id="log-text" href="#">Notification Log</a><span id="notification-amount"></span></div>
                     </div>
+                    <div onclick="cameraPageFunction()" style="cursor: pointer" id = "cameraPage" class = 'button button6 button_slide slide_right dropdown-content'>
+                        <div id="#">Camera Videos</div>
+                    </div>
             </div>
         </div>
     </div>
@@ -177,5 +224,6 @@
     <script src="armStatus.js"></script>
     <script src="userSettings.js"></script>
     <script src="notificationLog.js"></script>
+    <script src="VideoPlayer.js"></script>
 </body>
 </html>

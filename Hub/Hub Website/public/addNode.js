@@ -67,7 +67,8 @@ deviceForm.addEventListener('submit', (e)=>{
         status: -1,
         data: -1,
         lowTemp: parseFloat(deviceLowTemp),
-        highTemp: parseFloat(deviceHighTemp)
+        highTemp: parseFloat(deviceHighTemp),
+        batLvl: 0.0
     });
 
     deviceNameInput.value = "";
@@ -92,7 +93,12 @@ function nodeHtmlFromObject(node) {
     const deviceBox = document.createElement("div");
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${node.name}</h3>`;
-    deviceBox.innerHTML +=  `<div><button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button></div>`;
+    deviceBox.innerHTML +=  
+        `
+        <i class="fa fa-battery-empty"></i>
+        <div class="node-del">
+            <button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button>
+        </div>`;
     if (node.type == "Temperature Sensor") {
         deviceBox.innerHTML += `<p class = "node_data">&#127777 Temp: <span  id = "${node.macAddr}-data">__</span></p>`;
         deviceBox.innerHTML += `
