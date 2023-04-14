@@ -46,8 +46,10 @@ std::vector<Node> nodeList;
 Node sender;
 struct_message incomingReadings;
 bool messageReceived;
+bool batteryUpdate = false;
 char dataPath[32]; 
 char statusPath[34]; 
+char batPath[34]; 
 
 //--------------------------------------
 //              MISC.
@@ -138,6 +140,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   }
   writeLED(150, 0, 150);
 
+  // If camera, respond with hub arm/disarm status
   if (strcmp(sender.getType(), "Camera") == 0) {
     if (strcmp(hubStatus, "DISARMED") == 0) {
       sendMessageToDevice("System Disarmed", HUB_DISARM, 0.0f, sender.getMacAddr(), sender.getStringMacAddr());
@@ -148,11 +151,22 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     }
   }
 
+
+  //If temp sensor, check whether or not it is in the safe range
   if (strcmp(sender.getType(), "Temperature Sensor") == 0) {
     if(incomingReadings.data < sender.getLowTemp() || incomingReadings.data > sender.getHighTemp()) {
       Serial.println("TEMP VALUE OUT OF SAFE RANGE");
       incomingReadings.state = 2;
     }
+  }
+
+  //If state is 5, we need to update battery voltage
+  if(incomingReadings.state == BAT_VOL) {
+    batteryUpdate = true;
+  }
+  else
+  {
+    batteryUpdate = false;
   }
 
   strcpy(dataPath, "nodes/");
@@ -163,7 +177,11 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   strcat(statusPath, sender.getID());
   strcat(statusPath, "/status");
 
-  
+  strcpy(batPath, "nodes/");
+  strcat(batPath, sender.getID());
+  strcat(batPath, "/batLvl");
+
+  /*
   Serial.print("Data path: ");
   Serial.print(dataPath);
   Serial.println();
@@ -171,7 +189,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.print("Status Path: ");
   Serial.print(statusPath);
   Serial.println("\n");
-
+  */
+ 
   messageReceived = true;
 
  }
@@ -339,8 +358,15 @@ void setup() {
 
 void loop() {
   if (messageReceived == true) {
-    Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
-    Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data);
+    if(batteryUpdate == false) {
+      Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
+      Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data); 
+    }
+    else
+    {
+      Firebase.RTDB.setInt(&fbdo, batPath, incomingReadings.data); 
+    }
+    
     messageReceived = false;
     writeLED(0, 150, 0);
   }

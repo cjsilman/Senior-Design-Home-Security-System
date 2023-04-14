@@ -16,6 +16,7 @@
 #define GB_ERR -1
 #define ENT_OK 1
 #define ENT_DET 2
+#define BAT_VOL 5
 
 #include <string.h>
 #include <Arduino.h>
