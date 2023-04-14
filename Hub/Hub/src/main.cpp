@@ -359,8 +359,8 @@ void setup() {
 void loop() {
   if (messageReceived == true) {
     if(batteryUpdate == false) {
-      Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
       Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data); 
+      Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
     }
     else
     {
