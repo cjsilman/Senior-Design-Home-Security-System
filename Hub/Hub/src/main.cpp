@@ -12,8 +12,13 @@
 //--------------------------------------
 
 // Network credentials
-#define WIFI_SSID "lanboyp"
-#define WIFI_PASSWORD "saharajoe2020.!!"
+#define WIFI_SSID "Chris's Phone"
+#define WIFI_PASSWORD "dbym572)"
+
+//RGB LEDs
+#define redPin A0
+#define greenPin A1
+#define bluePin A5
 
 // ESPNOW Message structure
 typedef struct struct_message {
@@ -45,10 +50,21 @@ char dataPath[32];
 char statusPath[34]; 
 
 //--------------------------------------
+//              MISC.
+//--------------------------------------
+
+void writeLED(int redValue, int greenValue, int blueValue) {
+  analogWrite(redPin, redValue);
+  analogWrite(greenPin, greenValue);
+  analogWrite(bluePin, blueValue);
+}
+
+//--------------------------------------
 //              ESPNOW
 //--------------------------------------
 
 bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr, const char* stringMac) {
+  Serial.print("Sending message to: "); Serial.println(stringMac);
   struct_message myData;
   strcpy(myData.msg, message);
   memcpy(myData.macAddr, addr, 6);
@@ -120,6 +136,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   if (nodeFound == false) {
     return;
   }
+  writeLED(150, 0, 150);
 
   if (strcmp(sender.getType(), "Camera") == 0) {
     if (strcmp(hubStatus, "DISARMED") == 0) {
@@ -133,6 +150,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
   if (strcmp(sender.getType(), "Temperature Sensor") == 0) {
     if(incomingReadings.data < sender.getLowTemp() || incomingReadings.data > sender.getHighTemp()) {
+      Serial.println("TEMP VALUE OUT OF SAFE RANGE");
       incomingReadings.state = 2;
     }
   }
@@ -163,6 +181,14 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 //         Start up Functions
 //--------------------------------------
 
+void startLED() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+  writeLED(0, 0, 255);
+}
+
 void startWifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
@@ -182,27 +208,32 @@ void updateFirebaseHubInfo() {
   if (Firebase.RTDB.setString(&fbdo, "hub/hubAddress", WiFi.macAddress())) {
     Serial.print("Updated Firebase MAC Address to: ");
     Serial.println(WiFi.macAddress());
-    Serial.println();
   }
   else
   {
     Serial.println("Failed to update Firebase MAC Address");
     Serial.println(fbdo.errorReason());
-    Serial.println();
   }
 
   //Number of Nodes
   if (Firebase.RTDB.setInt(&fbdo, "hub/numberOfNodes", nodeList.size())) {
     Serial.print("Current number of active nodes: ");
     Serial.println(nodeList.size());
-    Serial.println();
   }
   else
   {
     Serial.println("Failed to update number of active nodes");
     Serial.println(fbdo.errorReason());
-    Serial.println();
   }
+
+  if(Firebase.RTDB.getString(&fbdo, "hub/hStatus/hubStatus")) {
+      const char *str = fbdo.to<const char *>();
+      if(!(strcmp(hubStatus, str) == 0)) {
+        strcpy(hubStatus, str);
+        Serial.print("Hub status is: "); Serial.println(hubStatus);
+      }
+      Serial.println();
+    }
 }
 
 void startEspnow() {
@@ -270,6 +301,8 @@ void setup() {
   Serial.println("Startup");
   Serial.println("--------------------------------------");
 
+  startLED();
+
   startWifi();
 
   startFirebase();
@@ -297,6 +330,7 @@ void setup() {
   Serial.println("Verification Complete");
   Serial.println("--------------------------------------");
   hubstatusTimer = millis();
+  writeLED(0, 150, 0);
 }
 
 //--------------------------------------
@@ -308,12 +342,16 @@ void loop() {
     Firebase.RTDB.setInt(&fbdo, statusPath, incomingReadings.state);
     Firebase.RTDB.setInt(&fbdo, dataPath, incomingReadings.data);
     messageReceived = false;
+    writeLED(0, 150, 0);
   }
 
   if ((millis() - hubstatusTimer) == 10000) {
     if(Firebase.RTDB.getString(&fbdo, "hub/hStatus/hubStatus")) {
       const char *str = fbdo.to<const char *>();
-      strcpy(hubStatus, str);
+      if(!(strcmp(hubStatus, str) == 0)) {
+        strcpy(hubStatus, str);
+        Serial.print("Hub now "); Serial.println(hubStatus);
+      }
     }
     hubstatusTimer = millis();
   }
