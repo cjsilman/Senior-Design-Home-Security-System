@@ -57,7 +57,7 @@ function downloadJSON() {
     const dateObj = new Date(logDate.value + " " + new Date().toLocaleTimeString());
     var dateToGetData = dateObj.toDateString();
     if((isNaN(logDate.value))) {
-        window.open(`https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/notificationlog/${dateToGetData}.json?download=${dateToGetData}.json`, "_blank");
+        window.open(`https://home-security-system-4c4fa-default-rtdb.firebaseio.com/notificationlog/${dateToGetData}.json?download=${dateToGetData}.json`, "_blank");
         msgArea.innerHTML = "";
     }
     else
@@ -76,7 +76,7 @@ function viewJSON() {
     var dateToGetData = dateObj.toDateString();
     if((isNaN(logDate.value)))
     {
-        window.open(`https://esp32-firebase-demo-b5b71-default-rtdb.firebaseio.com/notificationlog/${dateToGetData}.json?print=pretty`, "_blank");
+        window.open(`https://home-security-system-4c4fa-default-rtdb.firebaseio.com/notificationlog/${dateToGetData}.json?print=pretty`, "_blank");
         msgArea.innerHTML = "";
     }
     else
