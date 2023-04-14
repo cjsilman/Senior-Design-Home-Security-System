@@ -34,35 +34,6 @@ int32_t getWiFiChannel(const char *ssid) {
   return 0;
 }
 
-//MUST BE CALLED ONLY AFTER WIFI IS SETUP
-constexpr char WIFI_SSID[] = "Chris's Phone";
-
-void startWifi() {
-    WiFi.mode(WIFI_STA);
-
-    int32_t channel = getWiFiChannel(WIFI_SSID);
-
-    //WiFi.printDiag(Serial); // Uncomment to verify channel number before
-    esp_wifi_set_promiscuous(true);
-    esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
-    esp_wifi_set_promiscuous(false);
-    Serial.print("MAC: "); Serial.println(WiFi.macAddress());
-    //WiFi.printDiag(Serial); // Uncomment to verify channel change after
-
-    Serial.println("OK");
-}
-
-int32_t getWiFiChannel(const char* ssid) {
-    if (int32_t n = WiFi.scanNetworks()) {
-        for (uint8_t i = 0; i < n; i++) {
-            if (!strcmp(ssid, WiFi.SSID(i).c_str())) {
-                return WiFi.channel(i);
-            }
-        }
-    }
-    return 0;
-}
-
 void espnowSetup() {
   EEPROM.begin(4);
 
