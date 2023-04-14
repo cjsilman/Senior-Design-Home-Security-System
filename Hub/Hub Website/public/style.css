@@ -486,7 +486,7 @@ ul {
     .content {
         flex-direction: column-reverse;
         background-color: aqua;
-        height: 1500px;
+        height: 2000px;
         width: 100%;
     }
 
@@ -521,6 +521,10 @@ ul {
 
     #logPage {
         width: 100%;
+    }
+
+    #log-text {
+        font-size: 16px;
     }
     
     .button_slide {

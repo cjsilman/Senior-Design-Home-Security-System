@@ -95,7 +95,7 @@ function nodeHtmlFromObject(node) {
     deviceBox.innerHTML = `<h3>${node.name}</h3>`;
     deviceBox.innerHTML +=  
         `
-        <i class="fa fa-battery-empty"></i>
+        <i class="fa fa-battery-empty" id = "${node.macAddr}-bat"></i>
         <div class="node-del">
             <button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button>
         </div>`;

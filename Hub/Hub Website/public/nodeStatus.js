@@ -10,6 +10,7 @@ nodesRef.on("child_added", function(snap) {
 nodesRef.on("value", function(snap) {
     snap.forEach((child) => {
     checkData(
+            child.key,
             child.val().macAddr, 
             child.val().status, 
             child.val().data, 
@@ -24,8 +25,9 @@ nodesRef.on("value", function(snap) {
     })
 });
 
-function checkData(macAddr, status, value, type) {
-    data = document.getElementById(`${macAddr}-data`);
+function checkData(key, macAddr, status, value, type) {
+    let data = document.getElementById(`${macAddr}-data`);
+    let bat = document.getElementById(`${macAddr}-bat`);
     if (status == -1) {
         switch(type) {
             case "Camera":
@@ -92,6 +94,57 @@ function checkData(macAddr, status, value, type) {
                 data.innerHTML = "null";
         }
     }
+    //Bat Voltage
+    if (status == 5) {
+        switch(type) {
+            case "Camera":
+                calculateBatIcon(key, value, bat);
+                break;
+            case "Glassbreak Sensor":
+                calculateBatIcon(key, value, bat);
+                break;
+            case "Door Sensor":
+                calculateBatIcon(key, value, bat);
+                break;
+            case "Temperature Sensor":
+                calculateBatIcon(key, value, bat);
+                break;
+            default:
+                bat.innerHTML = "null";
+        }
+    }
+}
+
+function calculateBatIcon(key, batValue, nodeObject) {
+    nodeObject.innerHTML = ` <span style="color:#333; font-size:12px;">${batValue}%</span>`;
+    if(batValue >= 90) {
+        
+        nodeObject.setAttribute('class', 'fa fa-battery-full');
+        nodeObject.setAttribute('style', 'color:#333;');
+    } 
+    else if (batValue < 90 && batValue >= 75) {
+        nodeObject.setAttribute('class', 'fa fa-battery-three-quarters');
+        nodeObject.setAttribute('style', 'color:#333;');
+    } 
+    else if (batValue < 75 && batValue >= 50) {
+        nodeObject.setAttribute('class', 'fa fa-battery-half');
+        nodeObject.setAttribute('style', 'color:#333;');
+    } 
+    else if (batValue < 50 && batValue >= 8) {
+        nodeObject.setAttribute('class', 'fa fa-battery-quarter');
+        nodeObject.setAttribute('style', 'color:#333;');
+    } 
+    else if (batValue < 8 && batValue >= 5) {
+        nodeObject.setAttribute('class', 'fa fa-battery-empty');
+        nodeObject.setAttribute('style', 'color:orange;');
+    }
+    else {
+        nodeObject.setAttribute('class', 'fa fa-battery-empty');
+        nodeObject.setAttribute('style', 'color:red;');
+    }
+
+    let databaseNode = database.ref(`nodes/${key}`);
+    databaseNode.update({batLvl: batValue});
 }
 
 function addToNotificationLog(key, i_macAddr, i_status, i_name, i_value, i_type) {
