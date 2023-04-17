@@ -37,7 +37,7 @@ int32_t getWiFiChannel(const char *ssid) {
 void espnowSetup() {
   EEPROM.begin(4);
 
-  startWifi();
+  startWiFi();
 
   Serial.print("Mac: "); Serial.println(WiFi.macAddress());
 

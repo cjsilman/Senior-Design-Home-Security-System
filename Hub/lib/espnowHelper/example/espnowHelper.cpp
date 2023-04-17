@@ -6,39 +6,38 @@ esp_now_peer_info_t peerInfo;
 
 uint8_t hubAddr[6] = {0x44, 0x17, 0x93, 0x5F, 0xB7, 0xB0};
 
-//MUST BE CALLED ONLY AFTER WIFI IS SETUP
+//Bonus WiFi to fix channel issues
 constexpr char WIFI_SSID[] = "Chris's Phone";
 
-void startWifi() {
-    WiFi.mode(WIFI_STA);
+void startWiFi() {
+  WiFi.mode(WIFI_STA);
 
-    int32_t channel = getWiFiChannel(WIFI_SSID);
+  int32_t channel = getWiFiChannel(WIFI_SSID);
+  
+  WiFi.printDiag(Serial); // Uncomment to verify channel number before
+  esp_wifi_set_promiscuous(true);
+  esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
+  esp_wifi_set_promiscuous(false);
+  WiFi.printDiag(Serial); // Uncomment to verify channel change after
 
-    //WiFi.printDiag(Serial); // Uncomment to verify channel number before
-    esp_wifi_set_promiscuous(true);
-    esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
-    esp_wifi_set_promiscuous(false);
-    Serial.print("MAC: "); Serial.println(WiFi.macAddress());
-    //WiFi.printDiag(Serial); // Uncomment to verify channel change after
-
-    Serial.println("OK");
+  Serial.println("OK");
 }
 
-int32_t getWiFiChannel(const char* ssid) {
-    if (int32_t n = WiFi.scanNetworks()) {
-        for (uint8_t i = 0; i < n; i++) {
-            if (!strcmp(ssid, WiFi.SSID(i).c_str())) {
-                return WiFi.channel(i);
-            }
-        }
-    }
-    return 0;
+int32_t getWiFiChannel(const char *ssid) {
+  if (int32_t n = WiFi.scanNetworks()) {
+      for (uint8_t i=0; i<n; i++) {
+          if (!strcmp(ssid, WiFi.SSID(i).c_str())) {
+              return WiFi.channel(i);
+          }
+      }
+  }
+  return 0;
 }
 
 void espnowSetup() {
   EEPROM.begin(4);
 
-  startWifi();
+  startWiFi();
 
   Serial.print("Mac: "); Serial.println(WiFi.macAddress());
 
@@ -66,6 +65,7 @@ void addHubToPeer() {
     return;
   }
 }
+
 
 bool sendMessageToDevice(const char * message, int state, float data, uint8_t* addr) {
   struct_message myData;

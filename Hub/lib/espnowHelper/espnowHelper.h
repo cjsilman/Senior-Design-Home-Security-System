@@ -39,7 +39,7 @@ typedef struct struct_message {
 
 
 
-void startWifi();
+void startWiFi();
 
 int32_t getWiFiChannel(const char* ssid);
 
