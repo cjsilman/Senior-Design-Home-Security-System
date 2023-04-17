@@ -166,6 +166,10 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     SysArmed = false;
     HubState = true;
   }
+  else {
+    SysArmed = true;
+    HubState = true;
+  }
 
   messageReceived = true;
 }

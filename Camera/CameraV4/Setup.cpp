@@ -35,8 +35,8 @@
 //-------------------------------------------------------
 //SSID and Password for Wifi
 
-const char* ssid = "JD2.4";
-const char* password ="Hal9cour9!";
+const char* ssid = "Chris's Phone";
+const char* password ="dbym572)";
 
 //-------------------------------------------------------
 //time variables
@@ -80,15 +80,15 @@ unsigned int ProgCount = 0;
 //Firebase Definitions
 
 //API Key
-#define API_KEY "AIzaSyCwasbPktOgE6gTIMXMlVcpc0aPidCtDgs"
+#define API_KEY "AIzaSyC5ntQi0lBvcJ7-narsm0VrKc5erbTZjwY"
 
 //Authorized Upload Creds
 #define USER_EMAIL "jwdurie@gmail.com"
-#define USER_PASSWORD "Hal9cour9!"
+#define USER_PASSWORD "AdminAdmin1"
 
 //Bucket ID
-#define STORAGE_BUCKET_ID "esp32-cam-photo-upload.appspot.com"
-
+#define STORAGE_BUCKET_ID "home-security-system-4c4fa.appspot.com"
+//esp32-cam-photo-upload.appspot.com
 //Firebase Data Objects
 FirebaseData fbdo;
 FirebaseAuth auth;

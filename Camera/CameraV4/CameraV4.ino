@@ -75,13 +75,14 @@ if(SysArmed == true)   {
     Serial.println("Camera Configured");
   
     SDInit();
-    Serial.println("MicroSD Initialized");
-
-    WifiInit();
-    Serial.println("WiFi Initialized"); 
+    Serial.println("MicroSD Initialized"); 
 
     Rapid();
   
+    WifiInit();
+    Serial.println("WiFi Initialized"); 
+    delay(2000);
+
     FirebaseUpl();
     delay(1000);
   

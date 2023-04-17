@@ -148,6 +148,7 @@ function playSlides() {
     
     if(frame > 149) {
         document.getElementById(`image${frame-1}`).setAttribute("class", "hiddenImages");
+        
         frame = 0;
     }
 }
