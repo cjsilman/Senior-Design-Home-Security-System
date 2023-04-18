@@ -326,7 +326,7 @@ void attemptContactWithEachDevice() {
 //           Loop Functions
 //--------------------------------------
 void checkArmStatus() {
-  if ((millis() - hubstatusTimer) == 10000) {
+  if ((millis() - hubstatusTimer) >= 10000) {
     if(Firebase.RTDB.getString(&fbdo, "hub/hStatus/hubStatus")) {
       const char *str = fbdo.to<const char *>();
       if(!(strcmp(hubStatus, str) == 0)) {
