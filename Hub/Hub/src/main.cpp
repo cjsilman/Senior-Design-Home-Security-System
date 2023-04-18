@@ -377,14 +377,14 @@ void setup() {
   Serial.println("--------------------------------------");
 
   Serial.println("--------------------------------------");
-  Serial.println("Verify Connection");
+  Serial.println("Check For New Devices");
   Serial.println("--------------------------------------");
 
 
   attemptContactWithEachDevice();
 
   Serial.println("--------------------------------------");
-  Serial.println("Verification Complete");
+  Serial.println("Check Complete");
   Serial.println("--------------------------------------");
   hubstatusTimer = millis();
 }
