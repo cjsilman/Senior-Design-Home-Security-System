@@ -24,6 +24,8 @@ var totalNodes = 0;
 nodesRef.on("child_added", function(snap) {
     console.log("Added", snap.key, snap.val());
     nodeList.insertBefore(nodeHtmlFromObject(snap.val()), nodeCreator);
+    let bat = document.getElementById(`${snap.val().macAddr}-bat`);
+    updateBatLevel(snap.val().batLvl, bat);
     updateTotalNodes();
 });
 
@@ -93,12 +95,16 @@ function nodeHtmlFromObject(node) {
     const deviceBox = document.createElement("div");
     deviceBox.classList.add("node");
     deviceBox.innerHTML = `<h3>${node.name}</h3>`;
+    if (node.type != "Camera") {
     deviceBox.innerHTML +=  
         `
-        <i class="fa fa-battery-empty" id = "${node.macAddr}-bat"></i>
+        <i class="fa" id = "${node.macAddr}-bat"> 
+            <span style="color:#333; font-size:12px;">${node.batLvl}%</span>
+        </i>
         <div class="node-del">
             <button onclick="removeDevice('${node.macAddr}')" class="remove-device-button">[delete]</button>
         </div>`;
+    }
     if (node.type == "Temperature Sensor") {
         deviceBox.innerHTML += `<p class = "node_data">&#127777 Temp: <span  id = "${node.macAddr}-data">__</span></p>`;
         deviceBox.innerHTML += `
@@ -157,3 +163,32 @@ function updateTotalNodes() {
     });
 };
 
+//Battery Icon Update
+function updateBatLevel(batValue, nodeObject) {
+    nodeObject.innerHTML = ` <span style="color:#333; font-size:12px;">${batValue}%</span>`;
+    if(batValue >= 90) {
+        
+        nodeObject.setAttribute('class', 'fa fa-battery-full');
+        nodeObject.setAttribute('style', 'color:#55bd59;');
+    } 
+    else if (batValue < 90 && batValue >= 60) {
+        nodeObject.setAttribute('class', 'fa fa-battery-three-quarters');
+        nodeObject.setAttribute('style', 'color:#95bd55;');
+    } 
+    else if (batValue < 60 && batValue >= 35) {
+        nodeObject.setAttribute('class', 'fa fa-battery-half');
+        nodeObject.setAttribute('style', 'color:#adbd55;');
+    } 
+    else if (batValue < 35 && batValue >= 8) {
+        nodeObject.setAttribute('class', 'fa fa-battery-quarter');
+        nodeObject.setAttribute('style', 'color:#bdb355;');
+    } 
+    else if (batValue < 8 && batValue >= 5) {
+        nodeObject.setAttribute('class', 'fa fa-battery-empty');
+        nodeObject.setAttribute('style', 'color:#bd9355;');
+    }
+    else {
+        nodeObject.setAttribute('class', 'fa fa-battery-empty');
+        nodeObject.setAttribute('style', 'color:#bd6d55;');
+    }
+}

@@ -28,6 +28,8 @@ nodesRef.on("value", function(snap) {
 function checkData(key, macAddr, status, value, type) {
     let data = document.getElementById(`${macAddr}-data`);
     let bat = document.getElementById(`${macAddr}-bat`);
+    let batValue = value;
+
     if (status == -1) {
         switch(type) {
             case "Camera":
@@ -98,16 +100,16 @@ function checkData(key, macAddr, status, value, type) {
     if (status == 5) {
         switch(type) {
             case "Camera":
-                calculateBatIcon(key, value, bat);
+                calculateBatIcon(key, batValue, bat);
                 break;
             case "Glassbreak Sensor":
-                calculateBatIcon(key, value, bat);
+                calculateBatIcon(key, batValue, bat);
                 break;
             case "Door Sensor":
-                calculateBatIcon(key, value, bat);
+                calculateBatIcon(key, batValue, bat);
                 break;
             case "Temperature Sensor":
-                calculateBatIcon(key, value, bat);
+                calculateBatIcon(key, batValue, bat);
                 break;
             default:
                 bat.innerHTML = "null";
@@ -116,31 +118,31 @@ function checkData(key, macAddr, status, value, type) {
 }
 
 function calculateBatIcon(key, batValue, nodeObject) {
-    nodeObject.innerHTML = ` <span style="color:#333; font-size:12px;">${batValue}%</span>`;
+    nodeObject.innerHTML = ` <span style="color:#333; font-size:12px;"> ${batValue}%</span>`;
     if(batValue >= 90) {
         
         nodeObject.setAttribute('class', 'fa fa-battery-full');
-        nodeObject.setAttribute('style', 'color:#333;');
+        nodeObject.setAttribute('style', 'color:#55bd59;');
     } 
-    else if (batValue < 90 && batValue >= 75) {
+    else if (batValue < 90 && batValue >= 60) {
         nodeObject.setAttribute('class', 'fa fa-battery-three-quarters');
-        nodeObject.setAttribute('style', 'color:#333;');
+        nodeObject.setAttribute('style', 'color:#95bd55;');
     } 
-    else if (batValue < 75 && batValue >= 50) {
+    else if (batValue < 60 && batValue >= 35) {
         nodeObject.setAttribute('class', 'fa fa-battery-half');
-        nodeObject.setAttribute('style', 'color:#333;');
+        nodeObject.setAttribute('style', 'color:#adbd55;');
     } 
-    else if (batValue < 50 && batValue >= 8) {
+    else if (batValue < 35 && batValue >= 8) {
         nodeObject.setAttribute('class', 'fa fa-battery-quarter');
-        nodeObject.setAttribute('style', 'color:#333;');
+        nodeObject.setAttribute('style', 'color:#bdb355;');
     } 
     else if (batValue < 8 && batValue >= 5) {
         nodeObject.setAttribute('class', 'fa fa-battery-empty');
-        nodeObject.setAttribute('style', 'color:orange;');
+        nodeObject.setAttribute('style', 'color:#bd9355;');
     }
     else {
         nodeObject.setAttribute('class', 'fa fa-battery-empty');
-        nodeObject.setAttribute('style', 'color:red;');
+        nodeObject.setAttribute('style', 'color:#bd6d55;');
     }
 
     let databaseNode = database.ref(`nodes/${key}`);

@@ -197,26 +197,38 @@ function onStart() {
     document.getElementById('default').style.display= 'none';
     document.getElementById('DeleteVid').style.visibility = 'visible';
     document.getElementById('onVid-Controls').style.visibility = 'visible';
-    startUp = false; 
 }
 
 function loadImages() {
     let j = 0;
+
     setInterval(()=>{if( j < 150) {
         
         var temp = document.createElement("img");
         temp.setAttribute("class", "hiddenImages");
         temp.setAttribute("id", "image" + j);
+
         vidRef.child("image"+ j + ".jpg").getDownloadURL().then((url)=> { 
             temp.setAttribute("src", url);
             container.appendChild(temp);
-       })  
+        }).catch((err)=> {
+            errorImgRef.getDownloadURL().then((url)=> { 
+                temp.setAttribute("src", url);
+                container.appendChild(temp);
+            })
+        }) 
+
        j++;
 
        if(j==70) {
         timerLabel.innerHTML = "0.0";
-        document.getElementById('image0').setAttribute("class", "displayImages");
-        document.getElementById('loading').setAttribute("class", "hiddenImages");
+        if(playing == false) {
+            document.getElementById('image0').setAttribute("class", "displayImages");
+        }
+        if (startUp == true) {
+            document.getElementById('loading').setAttribute("class", "hiddenImages");
+            startUp = false; 
+        }
        }
       
       
