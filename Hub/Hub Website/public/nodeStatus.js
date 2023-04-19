@@ -153,35 +153,38 @@ function addToNotificationLog(key, i_macAddr, i_status, i_name, i_value, i_type)
     const datetime = new Date();
     date = datetime.toDateString();
     time = datetime.toLocaleTimeString();
-    if(i_status == 2) {
-        var updates = {};
-        updates[key + '/' + 'status/' + 3];
-        nodesRef.child(key).update({status: 3});
-
-        notifRef.get().then((snapshot)=>{
-            notifRef.update({number: snapshot.val().number+1, state: true});
-        });
-
-        
-
-        if(i_type != "Temperature Sensor")
-        {
-            database.ref("notificationlog/" + date + "/" + time).set({
-                macAddr: i_macAddr,
-                type: i_type,
-                message: `The device named "${i_name}" has detected something.`,
-                new: true
+    if(state == "ARMED")
+    {
+        if(i_status == 2) {
+            var updates = {};
+            updates[key + '/' + 'status/' + 3];
+            nodesRef.child(key).update({status: 3});
+    
+            notifRef.get().then((snapshot)=>{
+                notifRef.update({number: snapshot.val().number+1, state: true});
             });
+    
+            
+    
+            if(i_type != "Temperature Sensor")
+            {
+                database.ref("notificationlog/" + date + "/" + time).set({
+                    macAddr: i_macAddr,
+                    type: i_type,
+                    message: `The device named "${i_name}" has detected something.`,
+                    new: true
+                });
+            }
+            else
+            {
+                database.ref("notificationlog/" + date + "/" + time).set({
+                    macAddr: i_macAddr,
+                    type: i_type,
+                    message: `The device named "${i_name}" alarmed at a temperature of ${i_value}&degF`,
+                    new: true
+                });
+            }
+            
         }
-        else
-        {
-            database.ref("notificationlog/" + date + "/" + time).set({
-                macAddr: i_macAddr,
-                type: i_type,
-                message: `The device named "${i_name}" alarmed at a temperature of ${i_value}&degF`,
-                new: true
-            });
-        }
-        
     }
 }
